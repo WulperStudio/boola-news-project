@@ -1,0 +1,52 @@
+{
+  "name": "boola-news-project",
+  "private": true,
+  "description": "A simplified bare-bones starter for Gatsby",
+  "version": "0.1.0",
+  "license": "0BSD",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
+    "gatsby": "^2.25.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "^4.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^6.0.28",
+    "@storybook/addon-actions": "^6.0.28",
+    "@storybook/addon-backgrounds": "^6.0.28",
+    "@storybook/addon-contexts": "^5.3.21",
+    "@storybook/addon-docs": "^6.0.28",
+    "@storybook/addon-knobs": "^6.0.28",
+    "@storybook/addon-links": "^6.0.28",
+    "@storybook/addon-viewport": "^6.0.28",
+    "@storybook/addons": "^6.0.28",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.0.28",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
+    "polished": "^4.0.3",
+    "prettier": "2.1.2",
+    "typescript": "^4.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WulperStudio/boola-news-project"
+  },
+  "bugs": {
+    "url": "https://github.com/WulperStudio/boola-news-project/issues"
+  }
+}
