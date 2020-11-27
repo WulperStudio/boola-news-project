@@ -1,10 +1,19 @@
 version: '3'
 
 services:
-  gatsby:
+#  gatsby:
+#    build: .
+#    volumes:
+#     - ./:/app/
+#    ports:
+#      - 8000:8000
+#    command: npm start
+
+  storybook:
     build: .
     volumes:
       - ./:/app/
     ports:
-      - 8000:8000
-    command: npm start
+      - 9009:9009
+    command: npm run storybook
+
