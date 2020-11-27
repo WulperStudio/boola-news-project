@@ -1,0 +1,34 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks"
+import { withKnobs, text, object} from "@storybook/addon-knobs"
+import { action } from '@storybook/addon-actions'
+import Card from "./Card"
+import IconButton from "@material-ui/core/IconButton"
+import LinkIcon from "@material-ui/icons/Link"
+
+<Meta title="Molecules/Card" />
+
+# Card
+
+Description Card
+
+## SignUp Default
+<Preview withToolbar>
+  <Story name="Default">
+    <Card
+      title = {text("title","Flipp, la aplicación mas increíble de todos los tiempos llego a Brasil")}
+      avatar = {text("avatar","https://material-ui.com/static/images/avatar/3.jpg")}
+      action={
+        <IconButton aria-label="settings">
+          <LinkIcon/>
+        </IconButton>
+      }
+      quantities={object("quantities",[
+        {title: "Shares", detail: "10"},
+        {title: "Reach", detail: "150k"},
+        {title: "Views", detail: "50k"},
+        {title: "Leads", detail: "20k"},
+        {title: "Convert", detail: "5k"}
+      ])}
+    />
+  </Story>
+</Preview>
