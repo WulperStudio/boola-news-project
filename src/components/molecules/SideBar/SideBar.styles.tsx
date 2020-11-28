@@ -1,5 +1,4 @@
 import { makeStyles, Theme } from "@material-ui/core/styles"
-import { shadows } from "@material-ui/system"
 
 const useStyles = makeStyles((theme: Theme) => ({
   sidebar: {
@@ -23,10 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logo: {
     padding: "0px 16px",
-    borderRight: "1px solid #ECECFB",
+    borderRight: "1px solid #ECECFB"
   },
   fab: {
-    shadow: shadows,
     margin: "8px 0"
   },
   white:{

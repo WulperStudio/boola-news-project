@@ -11,7 +11,7 @@ import Muscles from "../../../assets/icons/Muscles"
 import Headset from "../../../assets/icons/Headset"
 import Config from "../../../assets/icons/Config"
 
-export default function SideBar(): ReactElement {
+export default function SideBar(){
   const classes = useStyles()
   return (
     <nav className={classes.sidebar}>

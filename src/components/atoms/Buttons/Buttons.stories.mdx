@@ -1,0 +1,96 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import { withKnobs, boolean } from "@storybook/addon-knobs";
+import { action } from '@storybook/addon-actions';
+import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid"
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import NavigationIcon from '@material-ui/icons/Navigation';
+import ButtonsHeaderResponsive from "./ButtonsHeaderResponsive"
+
+<Meta title="Atoms/Buttons" />
+
+# Buttons
+
+Los Botones contenidos son de alto énfasis, distinguidos por el uso de elevación y relleno. Contienen acciones que son primarias para la aplicación.
+
+## Buttons contained
+
+<Preview withToolbar>
+  <Story name="Buttons contained">
+      <Grid container direction="row" justify="space-around" alignItems="center">
+        <Button variant="contained">
+          Default
+        </Button>
+        <Button variant="contained" color="primary">
+          Primary
+        </Button>
+        <Button variant="contained" color="secondary">
+          Secondary
+        </Button>
+        <Button variant="contained" color="secondary" disabled>
+          Disabled
+        </Button>
+        <Button variant="contained" href="#contained-buttons">
+          Link
+        </Button>
+      </Grid>
+  </Story>
+</Preview>
+
+
+## Buttons contained
+
+<Preview withToolbar>
+  <Story name="Buttons outlined">
+    <Grid container direction="row" justify="space-around" alignItems="center">
+      <Button variant="outlined">
+        Default
+      </Button>
+      <Button variant="outlined" color="primary">
+        Primary
+      </Button>
+      <Button variant="outlined" color="secondary">
+        Secondary
+      </Button>
+      <Button variant="outlined" disabled>
+        Disabled
+      </Button>
+      <Button variant="outlined" href="#outlined-buttons">
+        Link
+      </Button>
+    </Grid>
+  </Story>
+</Preview>
+
+## Buttons fav
+
+<Preview withToolbar>
+  <Story name="Buttons fav">
+    <Grid container direction="row" justify="space-around" alignItems="center">
+      <Fab color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
+      <Fab color="secondary" aria-label="edit">
+        <EditIcon />
+      </Fab>
+      <Fab variant="extended" aria-label="delete" >
+        <NavigationIcon />
+        Extended
+      </Fab>
+      <Fab disabled aria-label="delete" >
+        <DeleteIcon />
+      </Fab>
+    </Grid>
+  </Story>
+</Preview>
+
+## Buttons Header Responsive
+
+<Preview withToolbar>
+  <Story name="Buttons header responsive">
+    <ButtonsHeaderResponsive icon={<AddIcon />} color="primary" title="Default" variant="contained"/>
+  </Story>
+</Preview>
