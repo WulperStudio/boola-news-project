@@ -1,0 +1,19 @@
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks"
+import { select } from "@storybook/addon-knobs"
+import { action } from '@storybook/addon-actions'
+import CardBlog from "./CardBlog"
+import IconButton from "@material-ui/core/IconButton"
+import LinkIcon from "@material-ui/icons/Link"
+
+<Meta title="Molecules/CardBlog" />
+
+# Card
+
+Description Card
+
+## SignUp Default
+<Preview withToolbar>
+  <Story name="Default">
+    <CardBlog variant={select("variant", ['type1', 'type2', 'type3'], 'type1')} />
+  </Story>
+</Preview>

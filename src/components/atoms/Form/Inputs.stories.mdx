@@ -1,0 +1,89 @@
+import TextField from './TextField'
+import MenuItem from '@material-ui/core/MenuItem'
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks"
+import Grid from "@material-ui/core/Grid"
+import { boolean } from "@storybook/addon-knobs"
+import { action } from '@storybook/addon-actions'
+
+<Meta title="Atoms/Forms" />
+
+## TextField
+<Preview withToolbar>
+  <Story name="TextField">
+    <Grid container direction="row" justify="space-around" alignItems="center">
+      <TextField label="Standard" error={boolean('error', false)} success={boolean('success', false)} />
+      <TextField label="Filled" variant="filled" error={boolean('error', false)} success={boolean('success', false)} />
+      <TextField label="Outlined" variant="outlined" error={boolean('error', false)}
+                 success={boolean('success', false)} />
+    </Grid>
+  </Story>
+</Preview>
+
+## TextField multiline
+<Preview withToolbar>
+  <Story name="TextField multiline">
+    <Grid container direction="row" justify="space-around" alignItems="center">
+      <TextField multiline label="Standard" rows={4} error={boolean('error', false)}
+                 success={boolean('success', false)} />
+      <TextField multiline label="Filled" variant="filled" rows={4} error={boolean('error', false)}
+                 success={boolean('success', false)} />
+      <TextField multiline label="Outlined" variant="outlined" rows={4} error={boolean('error', false)}
+                 success={boolean('success', false)} />
+    </Grid>
+  </Story>
+</Preview>
+
+## TextField select
+<Preview withToolbar>
+  <Story name="TextField select">
+    <Grid container direction="row" justify="space-around" alignItems="center">
+      <TextField
+        id="standard-select-currency"
+        select
+        label="Select"
+        value="USD"
+        onChange={action("onChange")}
+        helperText="Please select your currency"
+        error={boolean('error', false)}
+        success={boolean('success', false)}
+      >
+        <MenuItem key="USD" value="USD">$</MenuItem>
+        <MenuItem key="EUR" value="EUR">€</MenuItem>
+        <MenuItem key="BTC" value="BTC">฿</MenuItem>
+        <MenuItem key="JPY" value="JPY">¥</MenuItem>
+      </TextField>
+      <TextField
+        id="standard-select-currency"
+        select
+        label="Select"
+        value="USD"
+        onChange={action("onChange")}
+        helperText="Please select your currency"
+        variant="outlined"
+        error={boolean('error', false)}
+        success={boolean('success', false)}
+      >
+        <MenuItem key="USD" value="USD">$</MenuItem>
+        <MenuItem key="EUR" value="EUR">€</MenuItem>
+        <MenuItem key="BTC" value="BTC">฿</MenuItem>
+        <MenuItem key="JPY" value="JPY">¥</MenuItem>
+      </TextField>
+      <TextField
+        id="standard-select-currency"
+        select
+        label="Select"
+        value="USD"
+        onChange={action("onChange")}
+        helperText="Please select your currency"
+        variant="filled"
+        error={boolean('error', false)}
+        success={boolean('success', false)}
+      >
+        <MenuItem key="USD" value="USD">$</MenuItem>
+        <MenuItem key="EUR" value="EUR">€</MenuItem>
+        <MenuItem key="BTC" value="BTC">฿</MenuItem>
+        <MenuItem key="JPY" value="JPY">¥</MenuItem>
+      </TextField>
+    </Grid>
+  </Story>
+</Preview>

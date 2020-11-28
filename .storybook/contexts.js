@@ -1,5 +1,5 @@
 import { defaultTheme, darkTheme } from "../src/utils";
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/core';
 
 export const contexts = [
   {

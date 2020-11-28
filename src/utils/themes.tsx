@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles"  // @ts-ignore
+import { createMuiTheme } from "@material-ui/core"  // @ts-ignore
 import {
   poppinsRegular,
   poppinsItalic,
@@ -7,27 +7,30 @@ import {
   poppinsLight,
   poppinsLightItalic
 } from "./typography"
+import { backgrounds, text } from "./colors"
 
 export const defaultTheme = createMuiTheme({
   typography: {
-    fontFamily: "Poppins",
-  },
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        "@font-face": [poppinsRegular, poppinsItalic, poppinsBold,
-          poppinsBoldItalic, poppinsLight, poppinsLightItalic]
-      }
-    }
+    fontFamily: "Poppins"
   },
   palette: {
-    text: {
-      primary: "#3D3769"
-    },
     primary: {
-      main: "#7155F6"
+      main: backgrounds.primary,
+    },
+    secondary: {
+      main: backgrounds.secondary,
+      contrastText: '#FFF'
+    },
+    text: {
+      primary: text.primary
     }
   }
 })
 
-export const darkTheme = createMuiTheme({})
+export const darkTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#FF0000",
+    }
+  }
+})

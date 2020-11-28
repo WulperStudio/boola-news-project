@@ -1,0 +1,17 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+
+import { backgrounds, text, state } from '../../../utils';
+
+<Meta title="Colors" />
+
+# Colors
+
+<ColorPalette>
+  <ColorItem title="theme.palette.primary.main" subtitle="SlateBlue" colors={[backgrounds.primary]} />
+  <ColorItem title="theme.palette.secondary.main" subtitle="GreenYellow" colors={[backgrounds.secondary]} />
+  <ColorItem title="theme.palette.grey.main" subtitle="LightSlateGray" colors={[backgrounds.grey]} />
+  <ColorItem title="theme.palette.text.primary" subtitle="SlateBlueDark" colors={[text.primary]} />
+  <ColorItem title="theme.palette.success" subtitle="MediumAquamarine" colors={[state.success]} />
+  <ColorItem title="theme.palette.error" subtitle="Salmon" colors={[state.error]} />
+  <ColorItem title="theme.palette.disabled" subtitle="Gainsboro" colors={[state.disabled]} />
+</ColorPalette>
