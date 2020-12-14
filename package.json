@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
     "@wulpers-ui/core": "file:../wulpers-library-web/dist",
@@ -15,6 +16,7 @@
     "react-dom": "17.0.1"
   },
   "devDependencies": {
+    "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   }
 }
