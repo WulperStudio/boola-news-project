@@ -1,56 +1,20 @@
 {
-  "name": "boola-news-project",
-  "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
+  "name": "test",
   "version": "0.1.0",
-  "license": "0BSD",
+  "private": true,
   "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "storybook": "start-storybook -p 9009 -s static",
-    "build-storybook": "build-storybook -s static"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "@material-ui/core": "4.11.1",
-    "@material-ui/icons": "4.9.1",
-    "@material-ui/lab": "4.0.0-alpha.56",
-    "@material-ui/styles": "4.11.1",
-    "gatsby": "2.27.4",
-    "gatsby-plugin-web-font-loader": "^1.0.4",
+    "@wulpers-ui/core": "file:../wulpers-library-web/dist",
+    "isomorphic-unfetch": "^3.1.0",
+    "next": "10.0.3",
     "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-scripts": "4.0.1",
-    "react-string-replace": "0.4.4"
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "6.1.8",
-    "@storybook/addon-actions": "6.1.8",
-    "@storybook/addon-contexts": "5.3.21",
-    "@storybook/addon-docs": "6.1.8",
-    "@storybook/addon-knobs": "6.1.8",
-    "@storybook/addon-links": "6.1.8",
-    "@storybook/addon-viewport": "6.1.8",
-    "@storybook/addons": "6.1.8",
-    "@storybook/client-api": "^6.1.8",
-    "@storybook/preset-create-react-app": "3.1.5",
-    "@storybook/react": "6.1.8",
-    "@types/react": "17.0.0",
-    "@types/react-dom": "17.0.0",
-    "copy-webpack-plugin": "^6.3.2",
-    "polished": "4.0.5",
-    "prettier": "^2.2.1",
-    "typescript": "4.1.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/WulperStudio/boola-news-project"
-  },
-  "bugs": {
-    "url": "https://github.com/WulperStudio/boola-news-project/issues"
+    "typescript": "^4.1.3"
   }
 }

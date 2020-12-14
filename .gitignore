@@ -70,3 +70,13 @@ yarn-error.log
 
 # WebStrom
 .idea/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# vercel
+.vercel
