@@ -1,8 +1,9 @@
+import React from "react"
+import Link from "next/link"
 // @ts-ignore
 import styles from "../styles/Home.module.css"
-import Link from "next/link"
 
-const SavedPosts = props => {
+const SavedPosts = (props: any) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>saved-posts</h1>
