@@ -10,7 +10,7 @@ const Slug = (props: any) => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Tests</h1>
-      <Link href="/">Slug: {router.query.slug}</Link>
+      <Link href="/">Slug</Link>
     </div>
   )
 }
