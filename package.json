@@ -9,8 +9,8 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
-    "@wulpers-ui/core": "file:../wulpers-library-web/dist",
-    "isomorphic-unfetch": "^3.1.0",
+    "@wulpers-ui/core": "0.0.1-beta",
+    "isomorphic-unfetch": "3.1.0",
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1"

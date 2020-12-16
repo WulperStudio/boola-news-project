@@ -1,20 +1,21 @@
-import styles from "../styles/Home.module.css"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import fetch from "isomorphic-unfetch"
+// @ts-ignore
+import styles from "../styles/Home.module.css"
 
-const Slug = props => {
+const Slug = (props: any) => {
   const router = useRouter()
   console.log("query>>>", router.query)
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Tests</h1>
-      <Link href="/">Home</Link>
+      <Link href="/">Slug: {router.query.slug}</Link>
     </div>
   )
 }
 
-export const getServerSideProps = async ({ req, query }) => {
+export const getServerSideProps = async ({ req, query }: any) => {
   const queryGraphQL = `query {
       blogs(where: { domain: "${req.headers.host}" }) {
         title
@@ -31,7 +32,7 @@ export const getServerSideProps = async ({ req, query }) => {
   const response = await fetch(`${process.env.strapiServer}/graphql`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ query: queryGraphQL }),
+    body: JSON.stringify({ query: queryGraphQL })
   })
   const { data } = await response.json()
   return { props: { data: data.blogs[0] } }

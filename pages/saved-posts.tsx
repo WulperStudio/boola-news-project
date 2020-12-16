@@ -1,4 +1,4 @@
-import React from "react"
+// @ts-ignore
 import styles from "../styles/Home.module.css"
 import Link from "next/link"
 
