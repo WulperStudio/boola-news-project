@@ -1,18 +1,29 @@
-import Link from "next/link"
 import { useRouter } from "next/router"
 import fetch from "isomorphic-unfetch"
+import Error from "next/error"
+import Blog from "@wulpers-ui/core/components/templates/Blog"
+import CardBlog from "@wulpers-ui/core/components/molecules/CardBlog"
 // @ts-ignore
 import styles from "../styles/Home.module.css"
 
 const Slug = (props: any) => {
   const router = useRouter()
   console.log("query>>>", router.query)
-  return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Tests</h1>
-      <Link href="/">Slug</Link>
-    </div>
-  )
+  const post = props.data.posts[0]
+  if (props.data.posts[0]) {
+    return <Blog>
+      <br />
+      <CardBlog variant="type1" data={{
+        title: post.title,
+        preTitle: "preTitle",
+        content: post.content,
+        image: post.image.length ? process.env.strapiServer + post.image[0].url : null
+      }} />
+    </Blog>
+  } else {
+    // @ts-ignore
+    return <Error statusCode={404} />
+  }
 }
 
 export const getServerSideProps = async ({ req, query }: any) => {

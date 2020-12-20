@@ -6,16 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
+    "reinstall": "rm -rf node_modules && yarn && yarn run dev",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
-    "@wulpers-ui/core": "0.0.1-beta",
+    "@wulpers-ui/core": "0.0.1-beta-2",
+    "cookie": "^0.4.1",
+    "express": "^4.17.1",
     "isomorphic-unfetch": "3.1.0",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "axios": "^0.21.0",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   }
