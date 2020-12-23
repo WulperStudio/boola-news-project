@@ -5,6 +5,7 @@ import Talking from "@wulpers-ui/core/components/icons/Talking"
 import Muscles from "@wulpers-ui/core/components/icons/Muscles"
 import Headset from "@wulpers-ui/core/components/icons/Headset"
 import Config from "@wulpers-ui/core/components/icons/Config"
+import { setLogout } from "./middleware"
 
 const sideBarConfig = (page: string) => [
   {
@@ -42,7 +43,7 @@ const sideBarConfig = (page: string) => [
     onClick: function() {
       Router.push("/admin")
     }
-  },{
+  }, {
     title: "Talking",
     active: page === "/talking",
     icon: <Talking />,
@@ -67,6 +68,15 @@ const sideBarConfig = (page: string) => [
     type: "secondary",
     onClick: function() {
       Router.push("/admin/config")
+    }
+  },
+  {
+    title: "Logout",
+    active: page === "/Logout",
+    icon: "L",
+    type: "secondary",
+    onClick: async function() {
+      return await setLogout("/admin/login")
     }
   }
 ]

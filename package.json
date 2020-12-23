@@ -10,7 +10,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "dependencies": {
-    "@wulpers-ui/core": "0.0.1-beta-2",
+    "@wulpers-ui/core": "0.0.1-beta-3",
     "cookie": "^0.4.1",
     "express": "^4.17.1",
     "isomorphic-unfetch": "3.1.0",

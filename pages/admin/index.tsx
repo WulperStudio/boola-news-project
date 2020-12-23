@@ -1,12 +1,15 @@
 import React from "react"
+import Router, {useRouter} from "next/router"
 // @ts-ignore
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 // @ts-ignore
 import sideBarConfig from "../../utils/sideBarConfig"
-import Router from "next/router"
+import { getSessionData } from "../../utils/middleware"
+
 
 const AdminDashboard = () => {
-
+  const router = useRouter()
+  console.log("Router>>>", router)
   return (
     <AdminTheme
       title="Analyzing path of *_import & validation_* "
@@ -23,5 +26,7 @@ const AdminDashboard = () => {
     </AdminTheme>
   )
 }
+
+export const getServerSideProps = getSessionData
 
 export default AdminDashboard

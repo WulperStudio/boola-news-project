@@ -1,9 +1,8 @@
-import { ChangeEvent, MouseEvent } from "react"
-import type { NextApiRequest } from "next"
+import type { NextApiRequest, NextApiResponse } from "next"
 import jwt from "jsonwebtoken"
-
 import jsCookie from "js-cookie"
 import Router from "next/router"
+import axios from "axios"
 
 export function getAppCookies(req: NextApiRequest): Record<string, string> {
   let parsedItems: Record<string, string> = {}
@@ -46,12 +45,13 @@ export async function setLogin({ identifier, password, redirect }: PropsSetLogin
   if (result.jwt) {
     jsCookie.set("token", result.jwt)
     await Router.push(redirect)
+    //await Router.back()
   }
 }
 
-export async function setLogout() {
+export async function setLogout(redirect:string ="/login") {
   await jsCookie.remove("token")
-  await Router.push(`/login`)
+  await Router.push(redirect)
 }
 
 export async function getToken({ req }: { req: NextApiRequest }) {
@@ -61,4 +61,37 @@ export async function getToken({ req }: { req: NextApiRequest }) {
       token: token ? token : ""
     }
   }
+}
+
+function redirectLogin(res: NextApiResponse) {
+  res.writeHead(302, { // or 301
+    Location: "admin/login"
+  })
+  res.end()
+}
+
+export async function getSessionData({ req, res }: { req: NextApiRequest, res: NextApiResponse }) {
+  const { token } = await getAppCookies(req)
+  let dataSession = {}
+
+  if (!token) {
+    redirectLogin(res)
+  }
+
+  try {
+    const { data, status } = await axios.get(`${process.env.strapiServer}/users/me`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+
+    if (status !== 200) {
+      redirectLogin(res)
+    }
+    dataSession = data
+  } catch (e) {
+    redirectLogin(res)
+  }
+  return { props: { dataSession } }
+
 }
