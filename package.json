@@ -13,7 +13,7 @@
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@wulpers-ui/core": "0.0.1-beta-4",
+    "@wulpers-ui/core": "file:../wulpers-library-web/dist",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "express": "^4.17.1",
