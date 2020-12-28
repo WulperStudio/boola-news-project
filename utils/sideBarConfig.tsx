@@ -9,71 +9,18 @@ import { setLogout } from "./middleware"
 
 const sideBarConfig = (page: string) => [
   {
-    title: "Dashboard",
-    active: page === "/",
-    icon: <Lightning />,
-    type: "primary",
-    onClick: function() {
-      Router.push("/admin")
-    }
-  },
-  {
     title: "Campaigns",
     active: page === "/campaigns/table-view" || page === "/campaigns/cards-view",
-    icon: <Talking />,
+    icon: <Lightning />,
     type: "primary",
     onClick: function() {
       Router.push("/admin/campaigns/table-view")
     }
   },
   {
-    title: "User",
-    active: page === "/user",
-    icon: <User />,
-    type: "primary",
-    onClick: function() {
-      Router.push("/admin")
-    }
-  },
-  {
-    title: "Muscles",
-    active: page === "/muscles",
-    icon: <Muscles />,
-    type: "primary",
-    onClick: function() {
-      Router.push("/admin")
-    }
-  }, {
-    title: "Talking",
-    active: page === "/talking",
-    icon: <Talking />,
-    type: "primary",
-    onClick: function() {
-      Router.push("/admin")
-    }
-  },
-  {
-    title: "Headset",
-    active: page === "/headset",
-    icon: <Headset />,
-    type: "secondary",
-    onClick: function() {
-      Router.push("/admin")
-    }
-  },
-  {
-    title: "Config",
-    active: page === "/config",
-    icon: <Config />,
-    type: "secondary",
-    onClick: function() {
-      Router.push("/admin/config")
-    }
-  },
-  {
     title: "Logout",
     active: page === "/Logout",
-    icon: "L",
+    icon: "X",
     type: "secondary",
     onClick: async function() {
       return await setLogout("/admin/login")

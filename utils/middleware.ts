@@ -30,26 +30,27 @@ type PropsSetLogin = {
 }
 
 export async function setLogin({ identifier, password, redirect }: PropsSetLogin) {
-  const loginApi = await fetch(`${process.env.strapiServer}/auth/local`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ identifier, password })
+  return await axios.post(
+    `${process.env.strapiServer}/auth/local`, { identifier, password }
+  ).then(async response => {
+    if (response.data.jwt) {
+      jsCookie.set("token", response.data.jwt)
+      await Router.push(redirect)
+      return true
+    }
   }).catch(error => {
-    console.error("Error:", error)
+    return false
   })
   // @ts-ignore
-  const result = await loginApi.json()
-  if (result.jwt) {
-    jsCookie.set("token", result.jwt)
-    await Router.push(redirect)
-    //await Router.back()
-  }
+  /* const result = await loginApi.json()
+   if (result.jwt) {
+     jsCookie.set("token", result.jwt)
+     await Router.push(redirect)
+     //await Router.back()
+   }*/
 }
 
-export async function setLogout(redirect:string ="/login") {
+export async function setLogout(redirect: string = "/login") {
   await jsCookie.remove("token")
   await Router.push(redirect)
 }
@@ -65,7 +66,7 @@ export async function getToken({ req }: { req: NextApiRequest }) {
 
 function redirectLogin(res: NextApiResponse) {
   res.writeHead(302, { // or 301
-    Location: "admin/login"
+    Location: "/admin/login"
   })
   res.end()
 }
@@ -73,25 +74,29 @@ function redirectLogin(res: NextApiResponse) {
 export async function getSessionData({ req, res }: { req: NextApiRequest, res: NextApiResponse }) {
   const { token } = await getAppCookies(req)
   let dataSession = {}
+  let dataBlog = {}
 
   if (!token) {
     redirectLogin(res)
   }
 
   try {
-    const { data, status } = await axios.get(`${process.env.strapiServer}/users/me`, {
+    const query1 = await axios.get(`${process.env.strapiServer}/users/me`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
     })
 
-    if (status !== 200) {
+    const query2 = await axios.get(`${process.env.strapiServer}/blogs?domain=${req.headers.host}`)
+
+    if (query1.status !== 200 || query2.status !== 200) {
       redirectLogin(res)
     }
-    dataSession = data
+    dataSession = query1.data
+    dataBlog = query2.data[0]
   } catch (e) {
     redirectLogin(res)
   }
-  return { props: { dataSession } }
+  return { props: { token, dataSession, dataBlog, domain: req.headers.host } }
 
 }

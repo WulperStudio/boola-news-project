@@ -1,63 +1,28 @@
-import React, { ChangeEvent, useState } from "react"
-import Link from "next/link"
-import { getSessionData, setLogout, setLogin } from "../../utils/middleware"
+import React, { useState } from "react"
+import { setLogin } from "../../utils/middleware"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
+import SignIn, { OnSubmitProps } from "@wulpers-ui/core/components/organisms/SignIn/SignIn"
 
 const LoginAdmin = (props: any) => {
   const [loading, setLoading] = useState(false)
-  const [identifier, setIdentifier] = useState("arsd")
-  const [password, setPassword] = useState("*12Tres4")
+  const [errorText, setErrorText] = useState("")
+  //const identifier = "arsd";
+  //const password = "*12Tres4";
 
-  async function onSubmitHandler(e: ChangeEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function onSubmitHandler({ identifier, password }: OnSubmitProps) {
     setLoading(!loading)
-    await setLogin({ identifier, password, redirect: "/admin" })
+    await setLogin({ identifier, password, redirect: "/admin" }).then(response => {
+      if (!response) {
+        setErrorText("Incorrect email or password!")
+      }
+    })
     setLoading(false)
   }
 
   return (
     <AdminTheme loginView>
-      <h1>Login</h1>
-      <Link href="/">Home</Link>
-      {loading && "loading..."}
-      {!props.token && (
-        <form className="form-login card" method="POST" onSubmit={onSubmitHandler}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              className="form-control"
-              type="text"
-              id="email"
-              name="identifier"
-              placeholder="Email"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              className="form-control"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit" className="btn btn-block btn-warning">
-              Login
-            </button>
-          </div>
-        </form>
-      )}
-      {props.token && (
-        <button type="button" onClick={setLogout}>
-          Logout
-        </button>
-      )}
+      <SignIn onSubmit={onSubmitHandler} loading={loading} errorText={errorText}
+              title="Start using \n**Sheldon’s power** " />
     </AdminTheme>
   )
 }
