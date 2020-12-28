@@ -23,7 +23,7 @@ const Home = ({ data }: any) => {
             key={data.posts[0].title}
             variant="type2"
             data={{
-              title: data.posts.title,
+              title: data.posts[0].title,
               preTitle: "preTitle",
               content: data.posts[0].content,
               image: data.posts[0].image[0] ? process.env.strapiServer + data.posts[0].image[0].url : "https://boola-news-admin.herokuapp.com/uploads/card_image_b9274b39f7.png"
@@ -42,7 +42,7 @@ const Home = ({ data }: any) => {
               key={data.posts[1].title}
               variant="type1"
               data={{
-                title: data.posts.title,
+                title: data.posts[1].title,
                 preTitle: "preTitle",
                 content: data.posts[1].content,
                 image: data.posts[1].image[0] ? process.env.strapiServer + data.posts[1].image[0].url : "https://boola-news-admin.herokuapp.com/uploads/card_image_b9274b39f7.png"
@@ -60,7 +60,7 @@ const Home = ({ data }: any) => {
               key={data.posts[2].title}
               variant="type1"
               data={{
-                title: data.posts.title,
+                title: data.posts[2].title,
                 preTitle: "preTitle",
                 content: data.posts[2].content,
                 image: data.posts[2].image[0] ? process.env.strapiServer + data.posts[2].image[0].url : "https://boola-news-admin.herokuapp.com/uploads/card_image_b9274b39f7.png"
@@ -78,7 +78,7 @@ const Home = ({ data }: any) => {
               key={data.posts[3].title}
               variant="type1"
               data={{
-                title: data.posts.title,
+                title: data.posts[3].title,
                 preTitle: "preTitle",
                 content: data.posts[3].content,
                 image: data.posts[3].image[0] ? process.env.strapiServer + data.posts[3].image[0].url : "https://boola-news-admin.herokuapp.com/uploads/card_image_b9274b39f7.png"
