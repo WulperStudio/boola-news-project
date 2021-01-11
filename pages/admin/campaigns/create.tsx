@@ -5,7 +5,7 @@ import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed/AsideFixed"
 import Menu from "@wulpers-ui/core/components/molecules/Menu/Menu"
 import TextField from "@wulpers-ui/core/components/atoms/Form/TextField"
-//import Dropzone from "@wulpers-ui/core/components/atoms/Dropzone"
+import Dropzone from "@wulpers-ui/core/components/atoms/DropZone"
 import Fab from "@wulpers-ui/core/components/atoms/Fab"
 import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
 import Typography from "@wulpers-ui/core/components/atoms/Typography"
@@ -84,11 +84,11 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
         </div>
         <div style={{ padding: "12px 0" }}>
           <FormLabel size="small" component="legend">Attach image</FormLabel>
-          {/*<Dropzone
+          {<Dropzone
             onChange={(files: any) => {
               setImages(files)
             }}
-          />*/}
+          />}
         </div>
         <div style={{ padding: "12px 0" }}>
           <FormLabel size="small" component="legend">Status</FormLabel>
