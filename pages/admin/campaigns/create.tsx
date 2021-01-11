@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Router from "next/router"
 import axios from "axios"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
@@ -28,35 +28,73 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     views: 0,
     leads: 0,
     winned: 0,
+    image: [],
     blog: dataBlog,
-    "responsable": dataSession
+    responsable: dataSession
   })
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
 
-  function createPost() {
-    return axios.post(`${process.env.strapiServer}/posts`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
+
+  function createPost(preview: boolean) {
+    setLoading(true)
+    const formData = new FormData()
+
+    images.forEach(image => {
+      formData.append("files", image)
     })
-      .then(response => {
-        console.log("Data: ", response.data)
-        return Router.push("/admin/campaigns/table-view")
+    return axios
+      .post(`${process.env.strapiServer}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
       })
-      .catch(error => {
-        console.log("An error occurred:", error.response)
+      .then(res => {
+        return axios.post(`${process.env.strapiServer}/posts`, { ...data, image: res.data }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            console.log("Data: ", response.data)
+            if (preview) {
+              return Router.push(`/${response.data.slug}`)
+            } else {
+              return Router.push("/admin/campaigns/table-view")
+            }
+          })
+          .catch(error => {
+            console.log("An error occurred:", error.response)
+          })
+      })
+      .catch(err => {
+        console.log(err)
+        return err
       })
   }
 
   return (
-    <AdminTheme title="" buttonBackOnClick={() => Router.push("/admin/campaigns/table-view")}
-                navBarConfig={[
-                  {
-                    title: "Create",
-                    onClick: createPost,
-                    type: "Button"
-                  }]}>
+    <AdminTheme
+      title=""
+      buttonBackOnClick={() => {
+        setLoading(true)
+        Router.push("/admin/campaigns/table-view")
+      }}
+      navBarConfig={[
+        {
+          title: "Preview",
+          onClick: () => createPost(true),
+          type: "Button"
+        },
+        {
+          title: "Create",
+          onClick: () => createPost(false),
+          type: "Button"
+        }]}
+      loading={loading}
+    >
       <AsideFixed asideContent={
         <Menu
           button={

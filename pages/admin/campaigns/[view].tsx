@@ -52,6 +52,7 @@ const Campaigns = ({ token, domain }) => {
       title: "Fav",
       icon: <Plus />,
       onClick: function() {
+        setLoading(true)
         Router.push("/admin/campaigns/create")
       },
       type: "Fav"

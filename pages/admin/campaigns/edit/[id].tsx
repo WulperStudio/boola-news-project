@@ -45,6 +45,10 @@ export default function EditByID({ token, domain }: any) {
       })
   }, [])
 
+  function preview() {
+    return Router.push(`/${data.slug}`)
+  }
+
   function updatePost() {
     setLoading(true)
     const formData = new FormData()
@@ -83,11 +87,18 @@ export default function EditByID({ token, domain }: any) {
         setLoading(true)
         Router.push("/admin/campaigns/table-view")
       }}
-      navBarConfig={[{
-        title: "Save",
-        onClick: updatePost,
-        type: "Button"
-      }]}
+      navBarConfig={[
+        {
+          title: "Preview",
+          onClick: () => preview(),
+          type: "Button"
+        },
+        {
+          title: "Save",
+          onClick: updatePost,
+          type: "Button"
+        }
+      ]}
       loading={loading}
     >
       <AsideFixed asideContent={
