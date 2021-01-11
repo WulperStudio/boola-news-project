@@ -5,7 +5,7 @@ import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed/AsideFixed"
 import Menu from "@wulpers-ui/core/components/molecules/Menu/Menu"
 import TextField from "@wulpers-ui/core/components/atoms/Form/TextField"
-import Dropzone from "@wulpers-ui/core/components/atoms/Dropzone"
+//import Dropzone from "@wulpers-ui/core/components/atoms/Dropzone"
 import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
 import Typography from "@wulpers-ui/core/components/atoms/Typography"
 import Switch from "@wulpers-ui/core/components/atoms/Switch"
@@ -122,7 +122,7 @@ export default function EditByID({ token, domain }: any) {
 
           <FormLabel size="small" component="legend">Attach image</FormLabel>
 
-          {data.image.length > 0 && (
+          {/*data.image.length > 0 && (
             <Dropzone
               initialFiles={[process.env.strapiServer + data.image[0].url]}
               onChange={(files: any) => {
@@ -140,7 +140,7 @@ export default function EditByID({ token, domain }: any) {
                 setImages(files)
               }}
             />
-          )}
+          )*/}
 
         </div>
 
