@@ -4,12 +4,12 @@ import Router, { useRouter } from "next/router"
 import Plus from "@wulpers-ui/core/components/icons/Plus"
 import Table from "@wulpers-ui/core/components/organisms/Table/Table"
 import GridContainer from "@wulpers-ui/core/components/containers/Grid"
-import DeleteIcon from "@material-ui/icons/Delete"
-import Fab from "@material-ui/core/Fab"
+import Fab from "@wulpers-ui/core/components/atoms/Fab"
 import axios from "axios"
 import Card from "@wulpers-ui/core/components/molecules/Card"
+import FilterIcon from "@wulpers-ui/core/components/icons/Filter"
+
 import { getSessionData } from "../../../utils/middleware"
-import createPalette from "@material-ui/core/styles/createPalette"
 
 const Campaigns = ({ token, domain }) => {
   const route = useRouter()
@@ -30,13 +30,19 @@ const Campaigns = ({ token, domain }) => {
         // Handle error.
         console.log("An error occurred:", error.response)
       })
+
   }, [])
+
+  useEffect(() => {
+    setLoading(false)
+  }, [route.query.view])
 
   const navBarConfig = [
     {
       title: "Switch",
       onClick: function(view: string) {
         if (view) {
+          setLoading(true)
           Router.push(`/admin/campaigns/${view}-view`)
         }
       },
@@ -81,7 +87,7 @@ const Campaigns = ({ token, domain }) => {
     { key: "leads", align: "center" },
     { key: "winned", align: "center" },
     {
-      key: "id", align: "center", button: <DeleteIcon />, onClick: DeletePost
+      key: "id", align: "center", button: <FilterIcon />, onClick: DeletePost
     }
   ]
 
@@ -115,23 +121,31 @@ const Campaigns = ({ token, domain }) => {
       )}
       {(route.query.view === "cards-view") && (
         <GridContainer>
-          {dataRows.map(data => (
+          {dataRows.map(({
+                           title,
+                           responsable,
+                           shares,
+                           reach,
+                           views,
+                           leads,
+                           winned
+                         }: any) => (
             <Card
-              title={data.title}
-              avatar={data.responsable.avatar[0].formats ? process.env.strapiServer + data.responsable.avatar[0].formats.thumbnail.url : null}
+              title={title}
+              avatar={responsable.avatar[0].formats ? process.env.strapiServer + responsable.avatar[0].formats.thumbnail.url : null}
               action={
                 <Fab size="small" style={{ background: "#FFF", color: "#613EEA" }}>
-                  <DeleteIcon onClick={() => {
+                  <FilterIcon onClick={() => {
                     alert("hola")
                   }} />
                 </Fab>
               }
               quantities={[
-                { title: "Shares", detail: data.shares },
-                { title: "Reach", detail: data.reach },
-                { title: "Views", detail: data.views },
-                { title: "Leads", detail: data.leads },
-                { title: "Winned", detail: data.winned }
+                { title: "Shares", detail: shares },
+                { title: "Reach", detail: reach },
+                { title: "Views", detail: views },
+                { title: "Leads", detail: leads },
+                { title: "Winned", detail: winned }
               ]}
             />
           ))}

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
 import Router, { useRouter } from "next/router"
+import axios from "axios"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed/AsideFixed"
 import Menu from "@wulpers-ui/core/components/molecules/Menu/Menu"
 import TextField from "@wulpers-ui/core/components/atoms/Form/TextField"
 import Dropzone from "@wulpers-ui/core/components/atoms/Dropzone"
-import Fab from "@material-ui/core/Fab"
-import EditIcon from "@material-ui/icons/Edit"
-import Typography from "@material-ui/core/Typography"
-import axios from "axios"
 import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
-import Switch from "@material-ui/core/Switch"
+import Typography from "@wulpers-ui/core/components/atoms/Typography"
+import Switch from "@wulpers-ui/core/components/atoms/Switch"
+import Fab from "@wulpers-ui/core/components/atoms/Fab"
+import FilterIcon from "@wulpers-ui/core/components/icons/Filter"
 import { getSessionData } from "../../../../utils/middleware"
 
 const slug = require("slug")
@@ -98,7 +98,7 @@ export default function EditByID({ token, domain }: any) {
               size="medium"
               aria-label="edit"
             >
-              <EditIcon />
+              <FilterIcon />
             </Fab>
           }
           items={["Insert image", "Insert video", "Insert phrase", "Insert URL", "Insert subtitle"]}

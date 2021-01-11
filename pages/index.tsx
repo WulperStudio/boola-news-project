@@ -4,7 +4,7 @@ import Blog from "@wulpers-ui/core/components/templates/Blog"
 import CardBlog from "@wulpers-ui/core/components/molecules/CardBlog/CardBlog"
 import { useRouter } from "next/router"
 import { NextApiRequest } from "next"
-import Grid from "@material-ui/core/Grid"
+import Grid from "@wulpers-ui/core/components/atoms/Grid"
 
 const Home = ({ data }: any) => {
   const router = useRouter()
