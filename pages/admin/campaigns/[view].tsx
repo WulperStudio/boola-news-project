@@ -15,14 +15,17 @@ const Campaigns = ({ token, domain }) => {
   const route = useRouter()
   const [dataRows, setDataRows] = useState([])
   const [loading, setLoading] = useState(false)
+  const [rowsLoading, setRowsLoading] = useState(true)
 
   useEffect(() => {
+
     axios.get(`${process.env.strapiServer}/posts`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then(response => {
       // Handle success.
+      setRowsLoading(false)
       console.log("Data: ", response.data)
       setDataRows(response.data.filter((post: any) => post.blog.domain === domain))
     })
@@ -112,7 +115,7 @@ const Campaigns = ({ token, domain }) => {
                 loading={loading}>
       {(route.query.view === "table-view") && (
         <Table
-          loading={dataRows.length === 0}
+          loading={rowsLoading}
           idTable="id"
           headCells={headCells}
           formatRows={formatRows}
