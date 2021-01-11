@@ -95,15 +95,7 @@ const Home = ({ data }: any) => {
   )
 }
 
-export const getServerSideProps = async (
-  {
-    req
-  }
-    :
-    {
-      req: NextApiRequest
-    }
-) => {
+export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
   const queryGrpahQL = `query {
     blogs(where: { domain: "${req.headers.host}" }) {
       title
