@@ -27,6 +27,10 @@ export default function EditByID({ token, domain }: any) {
   })
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
+  const [titleError, setTitleError] = useState(false)
+  const [slugError, setSlugError] = useState(false)
+  const [imageError, setImageError] = useState(false)
+  const [contentError, setContentError] = useState(false)
 
   useEffect(() => {
 
@@ -45,39 +49,46 @@ export default function EditByID({ token, domain }: any) {
       })
   }, [])
 
-  function preview() {
-    return Router.push(`/${data.slug}`)
-  }
-
-  function updatePost() {
-    setLoading(true)
-    const formData = new FormData()
-
-    images.forEach(image => {
-      formData.append("files", image)
-    })
-
-    return axios
-      .post(`${process.env.strapiServer}/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+  function updatePost(preview: boolean) {
+    if (!data.title || !data.slug || !images.length || !data.content) {
+      setTitleError(!data.title)
+      setSlugError(!data.slug)
+      setImageError(!images.length)
+      setContentError(!data.content)
+    } else {
+      setLoading(true)
+      const formData = new FormData()
+      images.forEach(image => {
+        formData.append("files", image)
       })
-      .then(res => {
-        return axios.put(`${process.env.strapiServer}/posts/${route.query.id}`, { ...data, image: res.data }, {
-          headers: { "Authorization": `Bearer ${token}` }
+
+      return axios
+        .post(`${process.env.strapiServer}/upload`, formData, {
+          headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
         })
-          .then(response => {
-            //setLoading(false)
-            console.log("Data: ", JSON.stringify(response.data))
-            return Router.push("/admin/campaigns/table-view")
-          })
-          .catch(error => {
-            console.log("An error occurred:", error.response)
-          })
-      })
-      .catch(err => {
-        console.log(err)
-        return err
-      })
+        .then(res => {
+            return axios.put(`${process.env.strapiServer}/posts/${route.query.id}`, { ...data, image: res.data }, {
+              headers: { "Authorization": `Bearer ${token}` }
+            })
+              .then(response => {
+                //setLoading(false)
+                console.log("Data: ", JSON.stringify(response.data))
+                if (preview) {
+                  return Router.push(`/${data.slug}`)
+                } else {
+                  return Router.push("/admin/campaigns/table-view")
+                }
+              })
+              .catch(error => {
+                console.log("An error occurred:", error.response)
+              })
+          }
+        )
+        .catch(err => {
+          console.log(err)
+          return err
+        })
+    }
   }
 
   return (
@@ -90,12 +101,12 @@ export default function EditByID({ token, domain }: any) {
       navBarConfig={[
         {
           title: "Preview",
-          onClick: () => preview(),
+          onClick: () => updatePost(true),
           type: "Button"
         },
         {
           title: "Save",
-          onClick: updatePost,
+          onClick: () => updatePost(false),
           type: "Button"
         }
       ]}
@@ -120,70 +131,98 @@ export default function EditByID({ token, domain }: any) {
         </Typography>
 
         <div style={{ padding: "12px 0" }}>
-          <TextField label="Title" fullWidth value={data.title}
-                     onChange={e => setData({ ...data, title: e.target.value, slug: slug(e.target.value) })} />
+          <TextField
+            label="Title"
+            error={titleError}
+            helperText={titleError ? "Incorrect entry." : ""}
+            fullWidth
+            value={data.title}
+            onChange={(e: any) => {
+              setTitleError(false)
+              setSlugError(false)
+              setData({ ...data, title: e.target.value, slug: slug(e.target.value) })
+            }} />
         </div>
 
         <div style={{ padding: "12px 0" }}>
-          <TextField label="Slug" fullWidth value={data.slug} InputProps={{ readOnly: true }}
-                     onChange={e => setData({ ...data, slug: e.target.value })} />
+          <TextField
+            label="Slug"
+            error={slugError}
+            helperText={slugError ? "Incorrect entry." : ""}
+            fullWidth
+            value={data.slug}
+            InputProps={{ readOnly: true }}
+            onChange={(e: any) => {
+              setSlugError(false)
+              setData({ ...data, slug: e.target.value })
+            }} />
         </div>
 
         <div style={{ padding: "12px 0" }}>
-
-          <FormLabel size="small" component="legend">Attach image</FormLabel>
-
+          <FormLabel error={imageError} size="small" component="legend">Attach image</FormLabel>
           {data.image.length > 0 && (
             <Dropzone
+              error={imageError}
+              helperText={imageError ? "Incorrect entry." : ""}
               initialFiles={[process.env.strapiServer + data.image[0].url]}
               onChange={(files: any) => {
-                console.log("onChange", files)
+                setImageError(false)
                 setImages(files)
-              }}
-              onSave={(files: any) => {
-                console.log("onSave", files)
               }}
             />
           )}
           {data.image.length === 0 && (
             <Dropzone
+              error={imageError}
+              helperText={imageError ? "Incorrect entry." : ""}
               onChange={(files: any) => {
+                setImageError(false)
                 setImages(files)
               }}
             />
           )}
-
         </div>
 
         <div style={{ padding: "12px 0" }}>
           <FormLabel size="small" component="legend">Status</FormLabel>
           <Switch
             checked={data.status === "Publish"}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({
-              ...data,
-              status: e.target.checked ? "Publish" : "Draft",
-              publishedDate: e.target.checked ? Date.now().toString() : ""
-            })}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setData({
+                ...data,
+                status: e.target.checked ? "Publish" : "Draft",
+                publishedDate: e.target.checked ? Date.now().toString() : ""
+              })
+            }}
             name="checkedA"
             inputProps={{ "aria-label": "secondary checkbox" }}
           />{data.status}
         </div>
 
         <div style={{ padding: "12px 0" }}>
-          <TextField label="Description" fullWidth multiline rows={4} value={data.content}
-                     onChange={e => setData({ ...data, content: e.target.value })} />
+          <TextField
+            label="Description"
+            error={contentError}
+            helperText={contentError ? "Incorrect entry." : ""}
+            fullWidth multiline
+            rows={4}
+            value={data.content}
+            onChange={(e: any) => {
+              setContentError(false)
+              setData({ ...data, content: e.target.value })
+            }} />
         </div>
 
         <br />
 
-        <Typography gutterBottom variant="h6" component="h2" color="primary">
+        {/*<Typography gutterBottom variant="h6" component="h2" color="primary">
           {`CONTENT -> Title section`}
         </Typography>
 
-        <div style={{ padding: "12px 0" }}>
+          <div style={{padding: "12px 0"}}>
           <TextField label="Paragraph" fullWidth multiline rows={4} value={data.content}
-                     onChange={e => setData({ ...data, content: e.target.value })} />
-        </div>
+          onChange={e => setData({...data, content: e.target.value})} />
+          </div>*/}
 
       </AsideFixed>
 

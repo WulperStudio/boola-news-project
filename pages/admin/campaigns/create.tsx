@@ -32,12 +32,12 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     blog: dataBlog,
     responsable: dataSession
   })
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
   const [titleError, setTitleError] = useState(false)
   const [slugError, setSlugError] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [contentError, setContentError] = useState(false)
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(false)
@@ -53,7 +53,6 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     } else {
       setLoading(true)
       const formData = new FormData()
-
       images.forEach(image => {
         formData.append("files", image)
       })
