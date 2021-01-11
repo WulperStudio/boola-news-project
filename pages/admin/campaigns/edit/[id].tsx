@@ -159,9 +159,9 @@ export default function EditByID({ token, domain }: any) {
         </div>
 
         <div style={{ padding: "12px 0" }}>
-          <FormLabel error={imageError} size="small" component="legend">Attach image</FormLabel>
           {data.image.length > 0 && (
             <Dropzone
+              label={"Attach image"}
               error={imageError}
               helperText={imageError ? "Incorrect entry." : ""}
               initialFiles={[process.env.strapiServer + data.image[0].url]}
@@ -173,6 +173,7 @@ export default function EditByID({ token, domain }: any) {
           )}
           {data.image.length === 0 && (
             <Dropzone
+              label={"Attach image"}
               error={imageError}
               helperText={imageError ? "Incorrect entry." : ""}
               onChange={(files: any) => {
