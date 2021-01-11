@@ -71,16 +71,24 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
         <Typography gutterBottom variant="h6" component="h2" color="primary">
           POST DESCRIPTION -> Title section
         </Typography>
-        <p>
+        <div style={{ padding: "12px 0" }}>
           <TextField label="Title" fullWidth defaultValue={data.title} value={data.title}
                      onChange={e => setData({ ...data, title: e.target.value, slug: slug(e.target.value) })} />
-        </p>
-        <p>
+        </div>
+        <div style={{ padding: "12px 0" }}>
           <TextField label="Slug" fullWidth defaultValue={data.slug} value={data.slug} InputProps={{ readOnly: true }}
                      onChange={e => setData({ ...data, slug: e.target.value })} />
-        </p>
-        <p>
-          <FormLabel component="legend">Status</FormLabel>
+        </div>
+        <div style={{ padding: "12px 0" }}>
+          <FormLabel size="small" component="legend">Attach image</FormLabel>
+          <Dropzone
+            onChange={(files: any) => {
+              setImages(files)
+            }}
+          />
+        </div>
+        <div style={{ padding: "12px 0" }}>
+          <FormLabel size="small" component="legend">Status</FormLabel>
           <Switch
             checked={data.status === "Publish"}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({
@@ -91,14 +99,15 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
             name="checkedA"
             inputProps={{ "aria-label": "secondary checkbox" }}
           />{data.status}
-        </p>
+        </div>
         <br />
         <Typography gutterBottom variant="h6" component="h2" color="primary">
           CONTENT -> Title section
         </Typography>
-        <p><TextField label="Paragraph" fullWidth multiline rows={4} defaultValue={data.content} value={data.content}
-                      onChange={e => setData({ ...data, content: e.target.value })} />
-        </p>
+        <div style={{ padding: "12px 0" }}><TextField label="Paragraph" fullWidth multiline rows={4}
+                                                      defaultValue={data.content} value={data.content}
+                                                      onChange={e => setData({ ...data, content: e.target.value })} />
+        </div>
 
       </AsideFixed>
     </AdminTheme>

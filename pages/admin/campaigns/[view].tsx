@@ -118,7 +118,7 @@ const Campaigns = ({ token, domain }) => {
           {dataRows.map(data => (
             <Card
               title={data.title}
-              avatar={process.env.strapiServer + data.responsable.avatar[0].formats.thumbnail.url}
+              avatar={data.responsable.avatar[0].formats ? process.env.strapiServer + data.responsable.avatar[0].formats.thumbnail.url : null}
               action={
                 <Fab size="small" style={{ background: "#FFF", color: "#613EEA" }}>
                   <DeleteIcon onClick={() => {
