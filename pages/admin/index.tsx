@@ -1,11 +1,8 @@
 import React from "react"
 import Router, {useRouter} from "next/router"
-// @ts-ignore
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
-// @ts-ignore
 import sideBarConfig from "../../utils/sideBarConfig"
 import { getSessionData } from "../../utils/middleware"
-
 
 const AdminDashboard = () => {
   const router = useRouter()

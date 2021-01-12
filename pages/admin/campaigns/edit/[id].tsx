@@ -123,7 +123,13 @@ export default function EditByID({ token, domain }: any) {
               <FilterIcon />
             </Fab>
           }
-          items={["Insert image", "Insert video", "Insert phrase", "Insert URL", "Insert subtitle"]}
+          items={[
+            { title: "Insert image" },
+            { title: "Insert video" },
+            { title: "Insert phrase" },
+            { title: "Insert URL" },
+            { title: "Insert subtitle" }
+          ]}
         />
       }>
         <Typography gutterBottom variant="h6" component="h2" color="primary">

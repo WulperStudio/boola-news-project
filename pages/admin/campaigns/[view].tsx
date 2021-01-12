@@ -91,11 +91,15 @@ const Campaigns = ({ token, domain }) => {
     { key: "leads", align: "center" },
     { key: "winned", align: "center" },
     {
-      key: "id", align: "center", button: <FilterIcon />, onClick: DeletePost
+      key: "id", align: "center", button: <FilterIcon />,
+      menu: [
+        { title: "Delete", onClick: deletePost },
+        { title: "Publish", onClick: publishPost }
+      ]
     }
   ]
 
-  function DeletePost(id: string) {
+  function deletePost(id: string) {
     return axios.delete(`${process.env.strapiServer}/posts/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -104,6 +108,25 @@ const Campaigns = ({ token, domain }) => {
       // Handle success.
       console.log("Data: ", response.data)
       setDataRows(dataRows.filter((post: any) => post.id !== id))
+    }).catch(error => {
+      // Handle error.
+      console.log("An error occurred:", error.response)
+    })
+  }
+
+  function publishPost(id: string) {
+    return axios.put(`${process.env.strapiServer}/posts/${id}`, {
+      status: "Publish"
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(response => {
+      // Handle success.
+      console.log("Data: ", response.data)
+      /*let data = dataRows
+      dataRows.filter((post: any) => post.id === id).status = ""
+      setDataRows(dataRows.filter((post: any) => post.id === id).status = "" )*/
     }).catch(error => {
       // Handle error.
       console.log("An error occurred:", error.response)
