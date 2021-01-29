@@ -8,10 +8,14 @@ import Dropzone from "@wulpers-ui/core/components/atoms/DropZone"
 import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
 import Typography from "@wulpers-ui/core/components/atoms/Typography"
 import Switch from "@wulpers-ui/core/components/atoms/Switch"
-import CustomFormPost, {ValidateForm} from "@wulpers-ui/core/components/organisms/CustomFormPost"
+import CustomFormPost, {
+  ValidateForm,
+} from "@wulpers-ui/core/components/organisms/CustomFormPost"
 import FormRow, {
   FormContainer,
 } from "@wulpers-ui/core/components/containers/FormRow"
+import MediumEditor from "@wulpers-ui/core/components/atoms/MediumEditor/MediumEditor"
+import "@wulpers-ui/core/assets/MediumEditor.styles.min.css"
 import { getSessionData } from "../../../utils/middleware"
 import slug from "slug"
 
@@ -31,7 +35,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     image: [],
     blog: dataBlog,
     responsable: dataSession,
-    customForm: []
+    customForm: [],
   })
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -40,8 +44,8 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
   const [imageError, setImageError] = useState(false)
   const [contentError, setContentError] = useState(false)
 
-  const setCustomForm=(customForm) =>{
-    setData({...data,customForm})
+  const setCustomForm = customForm => {
+    setData({ ...data, customForm })
   }
 
   useEffect(() => {
@@ -49,20 +53,24 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
   }, [])
 
   useEffect(() => {
-    console.log("images>>>",images)
+    console.log("images>>>", images)
   }, [images])
 
   function createPost(preview: boolean) {
     const validateCustomForm = ValidateForm(data.customForm)
-    //console.log("validateCustomForm>>>",validateCustomForm)
-    if (validateCustomForm.errors){
-      setCustomForm(validateCustomForm.values)
-    }
-    /*if (!data.title || !data.slug || !images.length || !data.content) {
+
+    if (
+      !data.title ||
+      !data.slug ||
+      !images.length ||
+      !data.content ||
+      validateCustomForm.errors
+    ) {
       setTitleError(!data.title)
       setSlugError(!data.slug)
       setImageError(!images.length)
       setContentError(!data.content)
+      setCustomForm(validateCustomForm.values)
     } else {
       setLoading(true)
       const formData = new FormData()
@@ -103,7 +111,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
           console.log(err)
           return err
         })
-    }*/
+    }
   }
 
   return (
@@ -129,9 +137,13 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     >
       <AsideFixed>
         <FormContainer>
-          
           <FormRow>
-            <Typography gutterBottom variant="h6" component="h2" color="primary">
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="h2"
+              color="primary"
+            >
               {"POST DESCRIPTION -> Title section"}
             </Typography>
           </FormRow>
@@ -204,25 +216,23 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
           </FormRow>
 
           <FormRow>
-            <TextField
+            <MediumEditor
               label="Paragraph"
               error={contentError}
               helperText={contentError ? "Incorrect entry." : ""}
               fullWidth
               multiline
               rows={4}
-              defaultValue={data.content}
               value={data.content}
-              onChange={e => {
+              onChange={value => {
                 setContentError(false)
-                setData({ ...data, content: e.target.value })
+                setData({ ...data, content: value })
               }}
             />
           </FormRow>
-          
         </FormContainer>
         <CustomFormPost
-          title = "CONTENT -> Title section"
+          title="CONTENT -> Title section"
           values={data.customForm}
           setValues={setCustomForm}
         />
