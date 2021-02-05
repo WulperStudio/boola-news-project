@@ -71,12 +71,12 @@ export default function EditByID({ token, domain }: any) {
               headers: { "Authorization": `Bearer ${token}` }
             })
               .then(response => {
-                //setLoading(false)
                 console.log("Data: ", JSON.stringify(response.data))
                 if (preview) {
-                  return Router.push(`/${data.slug}`)
+                  setLoading(false)
+                  window.open(`/admin/campaigns/preview/${route.query.id}`, "_blank")
                 } else {
-                  return Router.push("/admin/campaigns/table-view")
+                  Router.push("/admin/campaigns/table-view")
                 }
               })
               .catch(error => {
