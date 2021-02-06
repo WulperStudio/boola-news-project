@@ -1,89 +1,106 @@
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect } from "react"
 import Router, { useRouter } from "next/router"
 import axios from "axios"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
-import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed/AsideFixed"
-import Menu from "@wulpers-ui/core/components/molecules/Menu/Menu"
-import TextField from "@wulpers-ui/core/components/atoms/Form/TextField"
-import Dropzone from "@wulpers-ui/core/components/atoms/DropZone"
-import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
-import Typography from "@wulpers-ui/core/components/atoms/Typography"
-import Switch from "@wulpers-ui/core/components/atoms/Switch"
-import Fab from "@wulpers-ui/core/components/atoms/Fab"
-import FilterIcon from "@wulpers-ui/core/components/icons/Filter"
+import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed"
+import CustomFormPost, {
+  ValidateForm,
+} from "@wulpers-ui/core/components/organisms/CustomFormPost"
+import PrincipalFormPost from "@wulpers-ui/core/components/organisms/PrincipalFormPost"
+import "@wulpers-ui/core/assets/MediumEditor.styles.min.css"
 import { getSessionData } from "../../../../utils/middleware"
+import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
+import SaveIcon from "@wulpers-ui/core/components/icons/Save"
+import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
 
-const slug = require("slug")
-
-export default function EditByID({ token, domain }: any) {
+export default function EditById({ token, domain, dataSession, dataBlog }: any) {
   const route = useRouter()
-  const [data, setData] = useState({
-    title: "",
-    content: "",
-    slug: "",
-    status: "Draft",
-    publishedDate: "",
-    image: []
+  const [data, setData] = useState(null)
+  const [errors, setErrors] = useState({
+    title: false,
+    content: false,
+    slug: false,
+    image: false,
   })
-  const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
-  const [titleError, setTitleError] = useState(false)
-  const [slugError, setSlugError] = useState(false)
-  const [imageError, setImageError] = useState(false)
-  const [contentError, setContentError] = useState(false)
+
+  const setCustomForm = customForm => {
+    setData({ ...data, customForm })
+  }
 
   useEffect(() => {
-
     axios.get(`${process.env.strapiServer}/posts/${route.query.id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
-        console.log("Data>>>", response.data)
-        setData(response.data)
-        setLoading(false)
+        //console.log("Data>>>", response.data.customForm)
+        setData({ 
+          ...response.data,
+          customForm: []
+        })
       })
-      .catch(error => {
-        console.log("An error occurred:", error.response)
-      })
+    
+    setLoading(false)
   }, [])
 
-  function updatePost(preview: boolean) {
-    if (!data.title || !data.slug || !images.length || !data.content) {
-      setTitleError(!data.title)
-      setSlugError(!data.slug)
-      setImageError(!images.length)
-      setContentError(!data.content)
+  function PublishPost() {
+    alert("PublishPost")
+  }
+
+  function createPost(preview: boolean) {
+    const validateCustomForm = ValidateForm(data.customForm)
+
+    if (
+      !data.title ||
+      !data.slug ||
+      !data.image.length ||
+      !data.content ||
+      validateCustomForm.errors
+    ) {
+      setErrors({
+        title: !data.title,
+        slug: !data.slug,
+        image: !data.image.length,
+        content: !data.content,
+      })
+      setCustomForm(validateCustomForm.values)
     } else {
       setLoading(true)
       const formData = new FormData()
-      images.forEach(image => {
+      data.image.forEach(image => {
         formData.append("files", image)
       })
-
       return axios
         .post(`${process.env.strapiServer}/upload`, formData, {
-          headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         })
         .then(res => {
-            return axios.put(`${process.env.strapiServer}/posts/${route.query.id}`, { ...data, image: res.data }, {
-              headers: { "Authorization": `Bearer ${token}` }
+          return axios
+            .post(
+              `${process.env.strapiServer}/posts`,
+              { ...data, image: res.data },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then(response => {
+              if (preview) {
+                return Router.push(`/${response.data.slug}`)
+              } else {
+                return Router.push("/admin/campaigns/table-view")
+              }
             })
-              .then(response => {
-                console.log("Data: ", JSON.stringify(response.data))
-                if (preview) {
-                  setLoading(false)
-                  window.open(`/admin/campaigns/preview/${route.query.id}`, "_blank")
-                } else {
-                  Router.push("/admin/campaigns/table-view")
-                }
-              })
-              .catch(error => {
-                console.log("An error occurred:", error.response)
-              })
-          }
-        )
+            .catch(error => {
+              console.log("An error occurred:", error.response)
+            })
+        })
         .catch(err => {
           console.log(err)
           return err
@@ -101,138 +118,38 @@ export default function EditByID({ token, domain }: any) {
       navBarConfig={[
         {
           title: "Preview",
-          onClick: () => updatePost(true),
-          type: "Button"
+          icon: <PublishIcon />,
+          onClick: () => PublishPost(true),
+          type: "Fav",
         },
         {
-          title: "Save",
-          onClick: () => updatePost(false),
-          type: "Button"
-        }
+          title: "Preview",
+          icon: <EyeIcon />,
+          onClick: () => createPost(true),
+          type: "Fav",
+        },
+        {
+          title: "Create",
+          icon: <SaveIcon />,
+          onClick: () => createPost(false),
+          type: "Fav",
+        },
       ]}
       loading={loading}
     >
-      <AsideFixed asideContent={
-        <Menu
-          button={
-            <Fab
-              color="inherit"
-              size="medium"
-              aria-label="edit"
-            >
-              <FilterIcon />
-            </Fab>
-          }
-          items={[
-            { title: "Insert image" },
-            { title: "Insert video" },
-            { title: "Insert phrase" },
-            { title: "Insert URL" },
-            { title: "Insert subtitle" }
-          ]}
+      {data && <AsideFixed>
+        <PrincipalFormPost
+          values={data}
+          setValues={setData}
+          errors={errors}
+          setErrors={setErrors}
         />
-      }>
-        <Typography gutterBottom variant="h6" component="h2" color="primary">
-          {`POST DESCRIPTION -> Title section`}
-        </Typography>
-
-        <div style={{ padding: "12px 0" }}>
-          <TextField
-            label="Title"
-            error={titleError}
-            helperText={titleError ? "Incorrect entry." : ""}
-            fullWidth
-            value={data.title}
-            onChange={(e: any) => {
-              setTitleError(false)
-              setSlugError(false)
-              setData({ ...data, title: e.target.value, slug: slug(e.target.value) })
-            }} />
-        </div>
-
-        <div style={{ padding: "12px 0" }}>
-          <TextField
-            label="Slug"
-            error={slugError}
-            helperText={slugError ? "Incorrect entry." : ""}
-            fullWidth
-            value={data.slug}
-            InputProps={{ readOnly: true }}
-            onChange={(e: any) => {
-              setSlugError(false)
-              setData({ ...data, slug: e.target.value })
-            }} />
-        </div>
-
-        <div style={{ padding: "12px 0" }}>
-          {data.image.length > 0 && (
-            <Dropzone
-              label={"Attach image"}
-              error={imageError}
-              helperText={imageError ? "Incorrect entry." : ""}
-              initialFiles={[process.env.strapiServer + data.image[0].url]}
-              onChange={(files: any) => {
-                setImageError(false)
-                setImages(files)
-              }}
-            />
-          )}
-          {data.image.length === 0 && (
-            <Dropzone
-              label={"Attach image"}
-              error={imageError}
-              helperText={imageError ? "Incorrect entry." : ""}
-              onChange={(files: any) => {
-                setImageError(false)
-                setImages(files)
-              }}
-            />
-          )}
-        </div>
-
-        <div style={{ padding: "12px 0" }}>
-          <FormLabel size="small" component="legend">Status</FormLabel>
-          <Switch
-            checked={data.status === "Publish"}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setData({
-                ...data,
-                status: e.target.checked ? "Publish" : "Draft",
-                publishedDate: e.target.checked ? Date.now().toString() : ""
-              })
-            }}
-            name="checkedA"
-            inputProps={{ "aria-label": "secondary checkbox" }}
-          />{data.status}
-        </div>
-
-        <div style={{ padding: "12px 0" }}>
-          <TextField
-            label="Description"
-            error={contentError}
-            helperText={contentError ? "Incorrect entry." : ""}
-            fullWidth multiline
-            rows={4}
-            value={data.content}
-            onChange={(e: any) => {
-              setContentError(false)
-              setData({ ...data, content: e.target.value })
-            }} />
-        </div>
-
-        <br />
-
-        {/*<Typography gutterBottom variant="h6" component="h2" color="primary">
-          {`CONTENT -> Title section`}
-        </Typography>
-
-          <div style={{padding: "12px 0"}}>
-          <TextField label="Paragraph" fullWidth multiline rows={4} value={data.content}
-          onChange={e => setData({...data, content: e.target.value})} />
-          </div>*/}
-
-      </AsideFixed>
-
+        <CustomFormPost
+          title="CONTENT -> Title section"
+          values={data.customForm}
+          setValues={setCustomForm}
+        />
+      </AsideFixed>}
     </AdminTheme>
   )
 }

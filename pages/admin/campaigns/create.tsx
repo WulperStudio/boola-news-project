@@ -2,25 +2,18 @@ import React, { useState, useEffect } from "react"
 import Router from "next/router"
 import axios from "axios"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
-import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed/AsideFixed"
-import TextField from "@wulpers-ui/core/components/atoms/Form/TextField"
-import Dropzone from "@wulpers-ui/core/components/atoms/DropZone"
-import FormLabel from "@wulpers-ui/core/components/atoms/FormLabel"
-import Typography from "@wulpers-ui/core/components/atoms/Typography"
-import Switch from "@wulpers-ui/core/components/atoms/Switch"
+import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed"
 import CustomFormPost, {
   ValidateForm,
 } from "@wulpers-ui/core/components/organisms/CustomFormPost"
-import FormRow, {
-  FormContainer,
-} from "@wulpers-ui/core/components/containers/FormRow"
-import MediumEditor from "@wulpers-ui/core/components/atoms/MediumEditor/MediumEditor"
+import PrincipalFormPost from "@wulpers-ui/core/components/organisms/PrincipalFormPost"
 import "@wulpers-ui/core/assets/MediumEditor.styles.min.css"
 import { getSessionData } from "../../../utils/middleware"
-import slug from "slug"
+import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
+import SaveIcon from "@wulpers-ui/core/components/icons/Save"
+import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
 
 export default function Create({ token, domain, dataSession, dataBlog }: any) {
-  console.log("dataSession>>>", JSON.stringify(dataSession))
   const [data, setData] = useState({
     title: "",
     content: "",
@@ -35,16 +28,20 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     image: [],
     blog: dataBlog,
     responsable: dataSession,
-    customForm: [],
+    customForm: {
+      data:[]
+    },
   })
-  const [images, setImages] = useState([])
+  const [errors, setErrors] = useState({
+    title: false,
+    content: false,
+    slug: false,
+    image: false,
+  })
   const [loading, setLoading] = useState(true)
-  const [titleError, setTitleError] = useState(false)
-  const [slugError, setSlugError] = useState(false)
-  const [imageError, setImageError] = useState(false)
-  const [contentError, setContentError] = useState(false)
 
-  const setCustomForm = customForm => {
+  const setCustomForm = data => {
+    const customForm = { data }
     setData({ ...data, customForm })
   }
 
@@ -52,29 +49,31 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     setLoading(false)
   }, [])
 
-  useEffect(() => {
-    console.log("images>>>", images)
-  }, [images])
+  function PublishPost() {
+    alert("PublishPost")
+  }
 
   function createPost(preview: boolean) {
-    const validateCustomForm = ValidateForm(data.customForm)
+    const validateCustomForm = ValidateForm(data.customForm.data)
 
     if (
       !data.title ||
       !data.slug ||
-      !images.length ||
       !data.content ||
       validateCustomForm.errors
     ) {
-      setTitleError(!data.title)
-      setSlugError(!data.slug)
-      setImageError(!images.length)
-      setContentError(!data.content)
+      console.log("data.image>>>",data.image)
+      setErrors({
+        title: !data.title,
+        slug: !data.slug,
+        image: false,
+        content: !data.content,
+      })
       setCustomForm(validateCustomForm.values)
     } else {
       setLoading(true)
       const formData = new FormData()
-      images.forEach(image => {
+      data.image.forEach(image => {
         formData.append("files", image)
       })
       return axios
@@ -96,7 +95,6 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
               }
             )
             .then(response => {
-              console.log("Data: ", response.data)
               if (preview) {
                 return Router.push(`/${response.data.slug}`)
               } else {
@@ -124,116 +122,35 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
       navBarConfig={[
         {
           title: "Preview",
+          icon: <PublishIcon />,
+          onClick: () => PublishPost(true),
+          type: "Fav",
+        },
+        {
+          title: "Preview",
+          icon: <EyeIcon />,
           onClick: () => createPost(true),
-          type: "Button",
+          type: "Fav",
         },
         {
           title: "Create",
+          icon: <SaveIcon />,
           onClick: () => createPost(false),
-          type: "Button",
+          type: "Fav",
         },
       ]}
       loading={loading}
     >
       <AsideFixed>
-        <FormContainer>
-          <FormRow>
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="h2"
-              color="primary"
-            >
-              {"POST DESCRIPTION -> Title section"}
-            </Typography>
-          </FormRow>
-
-          <FormRow>
-            <TextField
-              label="Title"
-              error={titleError}
-              helperText={titleError ? "Incorrect entry." : ""}
-              fullWidth
-              defaultValue={data.title}
-              value={data.title}
-              onChange={(e: any) => {
-                setTitleError(false)
-                setSlugError(false)
-                setData({
-                  ...data,
-                  title: e.target.value,
-                  slug: slug(e.target.value),
-                })
-              }}
-            />
-          </FormRow>
-
-          <FormRow>
-            <TextField
-              label="Slug"
-              error={slugError}
-              helperText={slugError ? "Incorrect entry." : ""}
-              fullWidth
-              defaultValue={data.slug}
-              value={data.slug}
-              InputProps={{ readOnly: true }}
-              onChange={(e: any) => {
-                setSlugError(false)
-                setData({ ...data, slug: e.target.value })
-              }}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Dropzone
-              label="Attach image"
-              error={imageError}
-              helperText={imageError ? "Incorrect entry." : ""}
-              onChange={(files: any) => {
-                setImageError(false)
-                setImages(files)
-              }}
-            />
-          </FormRow>
-
-          <FormRow>
-            <FormLabel size="small" component="legend">
-              Status
-            </FormLabel>
-            <Switch
-              checked={data.status === "Publish"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData({
-                  ...data,
-                  status: e.target.checked ? "Publish" : "Draft",
-                  publishedDate: e.target.checked ? Date.now().toString() : "",
-                })
-              }
-              name="checkedA"
-              inputProps={{ "aria-label": "secondary checkbox" }}
-            />
-            {data.status}
-          </FormRow>
-
-          <FormRow>
-            <MediumEditor
-              label="Paragraph"
-              error={contentError}
-              helperText={contentError ? "Incorrect entry." : ""}
-              fullWidth
-              multiline
-              rows={4}
-              value={data.content}
-              onChange={value => {
-                setContentError(false)
-                setData({ ...data, content: value })
-              }}
-            />
-          </FormRow>
-        </FormContainer>
+        <PrincipalFormPost
+          values={data}
+          setValues={setData}
+          errors={errors}
+          setErrors={setErrors}
+        />
         <CustomFormPost
           title="CONTENT -> Title section"
-          values={data.customForm}
+          values={data.customForm.data}
           setValues={setCustomForm}
         />
       </AsideFixed>
