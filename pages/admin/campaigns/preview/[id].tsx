@@ -19,26 +19,23 @@ export default function Preview({ domain, dataSession, token }: any) {
   useEffect(() => {
     getCommentsbyDomain(window.location.href, token)
       .then(data => {
-        console.log("data", data)
         setComments(data)
       })
       .catch(error => {
         setComments([])
-        console.log("An error occurred:", error.response)
+        console.error("An error occurred:", error.response)
       })
 
-    getPostById(route.query.id)
+    getPostById(route.query.id, token)
       .then(post => {
-        console.log("post>>>", post)
-        setData(post)
+        setData(post.data)
       })
       .catch(error => {
-        console.log("An error occurred:", error.response)
+        console.error("An error occurred:", error.response)
       })
   }, [])
 
   const onChangeComments = (type, data) => {
-    console.log("newMessage", type, data)
     if (type === "newComments") {
       return createComment(data, token)
         .then(({ data }) => {

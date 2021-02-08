@@ -6,7 +6,6 @@ import { getSessionData } from "../../utils/middleware"
 
 const AdminDashboard = () => {
   const router = useRouter()
-  console.log("Router>>>", router)
   return (
     <AdminTheme
       title="Analyzing path of *_import & validation_* "

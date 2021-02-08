@@ -26,12 +26,11 @@ const Campaigns = ({ token, domain }) => {
     }).then(response => {
       // Handle success.
       setRowsLoading(false)
-      console.log("Data: ", response.data)
       setDataRows(response.data.filter((post: any) => post.blog.domain === domain))
     })
       .catch(error => {
         // Handle error.
-        console.log("An error occurred:", error.response)
+        console.error("An error occurred:", error.response)
       })
 
   }, [])
@@ -106,11 +105,11 @@ const Campaigns = ({ token, domain }) => {
       }
     }).then(response => {
       // Handle success.
-      console.log("Data: ", response.data)
+      console.error("Data: ", response.data)
       setDataRows(dataRows.filter((post: any) => post.id !== id))
     }).catch(error => {
       // Handle error.
-      console.log("An error occurred:", error.response)
+      console.error("An error occurred:", error.response)
     })
   }
 
@@ -123,13 +122,13 @@ const Campaigns = ({ token, domain }) => {
       }
     }).then(response => {
       // Handle success.
-      console.log("Data: ", response.data)
+      console.error("Data: ", response.data)
       /*let data = dataRows
       dataRows.filter((post: any) => post.id === id).status = ""
       setDataRows(dataRows.filter((post: any) => post.id === id).status = "" )*/
     }).catch(error => {
       // Handle error.
-      console.log("An error occurred:", error.response)
+      console.error("An error occurred:", error.response)
     })
   }
 

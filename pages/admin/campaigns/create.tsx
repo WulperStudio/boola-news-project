@@ -28,9 +28,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     image: [],
     blog: dataBlog,
     responsable: dataSession,
-    customForm: {
-      data:[]
-    },
+    customForm: []
   })
   const [errors, setErrors] = useState({
     title: false,
@@ -40,8 +38,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
   })
   const [loading, setLoading] = useState(true)
 
-  const setCustomForm = data => {
-    const customForm = { data }
+  const setCustomForm = customForm => {
     setData({ ...data, customForm })
   }
 
@@ -49,24 +46,20 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     setLoading(false)
   }, [])
 
-  function PublishPost() {
-    alert("PublishPost")
-  }
-
   function createPost(preview: boolean) {
-    const validateCustomForm = ValidateForm(data.customForm.data)
+    const validateCustomForm = ValidateForm(data.customForm)
 
     if (
       !data.title ||
       !data.slug ||
+      !data.image.length ||
       !data.content ||
       validateCustomForm.errors
     ) {
-      console.log("data.image>>>",data.image)
       setErrors({
         title: !data.title,
         slug: !data.slug,
-        image: false,
+        image: !data.image.length,
         content: !data.content,
       })
       setCustomForm(validateCustomForm.values)
@@ -87,7 +80,11 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
           return axios
             .post(
               `${process.env.strapiServer}/posts`,
-              { ...data, image: res.data },
+              {
+                ...data,
+                image: res.data,
+                customForm: { data: data.customForm },
+              },
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -102,11 +99,11 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
               }
             })
             .catch(error => {
-              console.log("An error occurred:", error.response)
+              console.error("An error occurred:", error.response)
             })
         })
         .catch(err => {
-          console.log(err)
+          console.error(err)
           return err
         })
     }
@@ -120,12 +117,6 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
         Router.push("/admin/campaigns/table-view")
       }}
       navBarConfig={[
-        {
-          title: "Preview",
-          icon: <PublishIcon />,
-          onClick: () => PublishPost(true),
-          type: "Fav",
-        },
         {
           title: "Preview",
           icon: <EyeIcon />,
@@ -150,7 +141,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
         />
         <CustomFormPost
           title="CONTENT -> Title section"
-          values={data.customForm.data}
+          values={data.customForm}
           setValues={setCustomForm}
         />
       </AsideFixed>

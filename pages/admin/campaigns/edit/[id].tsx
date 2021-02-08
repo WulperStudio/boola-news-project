@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import Router, { useRouter } from "next/router"
-import axios from "axios"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import AsideFixed from "@wulpers-ui/core/components/containers/AsideFixed"
 import CustomFormPost, {
@@ -12,8 +11,15 @@ import { getSessionData } from "../../../../utils/middleware"
 import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import SaveIcon from "@wulpers-ui/core/components/icons/Save"
 import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
+import {
+  uploadFile,
+  deleteFileId,
+  updatePostById,
+  getPostById,
+  publishPostById,
+} from "../../../../queries"
 
-export default function EditById({ token, domain, dataSession, dataBlog }: any) {
+export default function EditById({ token }) {
   const route = useRouter()
   const [data, setData] = useState(null)
   const [errors, setErrors] = useState({
@@ -29,41 +35,44 @@ export default function EditById({ token, domain, dataSession, dataBlog }: any) 
   }
 
   useEffect(() => {
-    axios.get(`${process.env.strapiServer}/posts/${route.query.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => {
-        //console.log("Data>>>", response.data.customForm)
-        setData({ 
-          ...response.data,
-          customForm: []
-        })
+    getPostById(route.query.id, token).then(response => {
+      setData({
+        ...response.data,
+        customForm: response.data.customForm?.data
+          ? response.data.customForm.data
+          : [],
       })
-    
+    })
+
     setLoading(false)
   }, [])
 
   function PublishPost() {
-    alert("PublishPost")
+    setLoading(true)
+    publishPostById(data.id, token)
+      .then(() => Router.push("/admin/campaigns/table-view"))
+      .catch(error => {
+        console.error("An error occurred: ", error.response)
+      })
+  }
+  function validateContent(myString: string) {
+    return myString.replace(/<[^>]*>?/gm, "")
   }
 
-  function createPost(preview: boolean) {
+  function updatePost(preview: boolean) {
     const validateCustomForm = ValidateForm(data.customForm)
-
     if (
       !data.title ||
       !data.slug ||
       !data.image.length ||
-      !data.content ||
+      !validateContent(data.content) ||
       validateCustomForm.errors
     ) {
       setErrors({
         title: !data.title,
         slug: !data.slug,
         image: !data.image.length,
-        content: !data.content,
+        content: !validateContent(data.content),
       })
       setCustomForm(validateCustomForm.values)
     } else {
@@ -72,38 +81,36 @@ export default function EditById({ token, domain, dataSession, dataBlog }: any) 
       data.image.forEach(image => {
         formData.append("files", image)
       })
-      return axios
-        .post(`${process.env.strapiServer}/upload`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(res => {
-          return axios
-            .post(
-              `${process.env.strapiServer}/posts`,
-              { ...data, image: res.data },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
+      return deleteFileId(data.deleteImageId, token)
+        .then(() => {
+          uploadFile(formData, token)
+            .then(res =>
+              updatePostById(
+                data.id,
+                {
+                  ...data,
+                  image: res.data,
+                  customForm: { data: data.customForm },
                 },
-              }
+                token
+              )
+                .then(response => {
+                  if (preview) {
+                    return Router.push(`/admin/campaigns/preview/${data.id}`)
+                  } else {
+                    return Router.push("/admin/campaigns/table-view")
+                  }
+                })
+                .catch(error => {
+                  console.error("An error occurred: ", error.response)
+                })
             )
-            .then(response => {
-              if (preview) {
-                return Router.push(`/${response.data.slug}`)
-              } else {
-                return Router.push("/admin/campaigns/table-view")
-              }
-            })
             .catch(error => {
-              console.log("An error occurred:", error.response)
+              console.error("An error occurred: ", error.response)
             })
         })
-        .catch(err => {
-          console.log(err)
-          return err
+        .catch(error => {
+          console.error("An error occurred: ", error.response)
         })
     }
   }
@@ -119,37 +126,40 @@ export default function EditById({ token, domain, dataSession, dataBlog }: any) 
         {
           title: "Preview",
           icon: <PublishIcon />,
-          onClick: () => PublishPost(true),
+          onClick: () => PublishPost(),
           type: "Fav",
         },
         {
           title: "Preview",
           icon: <EyeIcon />,
-          onClick: () => createPost(true),
+          onClick: () => updatePost(true),
           type: "Fav",
         },
         {
-          title: "Create",
+          title: "Udpate",
           icon: <SaveIcon />,
-          onClick: () => createPost(false),
+          onClick: () => updatePost(false),
           type: "Fav",
         },
       ]}
       loading={loading}
     >
-      {data && <AsideFixed>
-        <PrincipalFormPost
-          values={data}
-          setValues={setData}
-          errors={errors}
-          setErrors={setErrors}
-        />
-        <CustomFormPost
-          title="CONTENT -> Title section"
-          values={data.customForm}
-          setValues={setCustomForm}
-        />
-      </AsideFixed>}
+      {data && (
+        <AsideFixed>
+          <PrincipalFormPost
+            values={data}
+            setValues={setData}
+            errors={errors}
+            setErrors={setErrors}
+            prefixFiles={process.env.strapiServer}
+          />
+          <CustomFormPost
+            title="CONTENT -> Title section"
+            values={data.customForm}
+            setValues={setCustomForm}
+          />
+        </AsideFixed>
+      )}
     </AdminTheme>
   )
 }

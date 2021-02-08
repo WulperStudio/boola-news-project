@@ -12,9 +12,6 @@ const Login = (props: any) => {
   const [identifier, setIdentifier] = useState("arsd")
   const [password, setPassword] = useState("*12Tres4")
 
-  console.log(props.token)
-  console.log(props.userSession)
-
   async function onSubmitHandler(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(!loading)

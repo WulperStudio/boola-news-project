@@ -8,7 +8,6 @@ import styles from "../styles/Home.module.css"
 
 const Slug = (props: any) => {
   const router = useRouter()
-  console.log("query>>>", router.query)
   const post = props.data.posts[0]
   if (props.data.posts[0]) {
     return <Blog>

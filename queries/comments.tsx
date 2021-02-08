@@ -11,7 +11,6 @@ export const getCommentsbyDomain = (domain: string, token: string) =>
     .catch(error => error.response)
 
 export const createComment = (formData: any, token: string) =>{
-  console.log("formData",formData)
   return axios.post(`${process.env.strapiServer}/comments`, formData, {
     headers: {
       "Content-Type": "application/json",
