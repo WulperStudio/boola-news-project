@@ -46,7 +46,6 @@ export default function Comments({
     }
     return false
   }
-  console.log("dataSession>>>",dataSession.avatar[0].formats.thumbnail.url)
 
   return (
     <>
