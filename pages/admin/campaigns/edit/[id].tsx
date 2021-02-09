@@ -12,11 +12,11 @@ import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import SaveIcon from "@wulpers-ui/core/components/icons/Save"
 import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
 import {
-  uploadFile,
-  deleteFileId,
+  deleteMassivelyFilesById,
   updatePostById,
   getPostById,
   publishPostById,
+  uploadMultipleFiles,
 } from "../../../../queries"
 
 export default function EditById({ token }) {
@@ -77,40 +77,53 @@ export default function EditById({ token }) {
       setCustomForm(validateCustomForm.values)
     } else {
       setLoading(true)
-      const formData = new FormData()
-      data.image.forEach(image => {
-        formData.append("files", image)
-      })
-      return deleteFileId(data.deleteImageId, token)
-        .then(() => {
-          uploadFile(formData, token)
-            .then(res =>
-              updatePostById(
-                data.id,
-                {
-                  ...data,
-                  image: res.data,
-                  customForm: { data: data.customForm },
-                },
-                token
-              )
-                .then(response => {
-                  if (preview) {
-                    return Router.push(`/admin/campaigns/preview/${data.id}`)
-                  } else {
-                    return Router.push("/admin/campaigns/table-view")
-                  }
-                })
-                .catch(error => {
-                  console.error("An error occurred: ", error.response)
-                })
-            )
+      let files = [data.image[0]]
+      data.customForm
+        .filter(form => form.type === "image")
+        .forEach(image => {
+          files.push(image.value[0])
+        })
+      return uploadMultipleFiles(files, token)
+        .then((res: any) => {
+          let j = 0
+          const updateCustomForm = data.customForm.map((form, i) => {
+            if (form.type === "image") {
+              j = j + 1
+              return { ...form, value: res[j].data }
+            } else {
+              return form
+            }
+          })
+          //TODO: faltan los ids de las imágenes de CustomForm
+          deleteMassivelyFilesById([data.deleteImageId], token)
+            .then(response => {
+              console.info("Response:", response)
+            })
             .catch(error => {
-              console.error("An error occurred: ", error.response)
+              console.error("An error occurred:", error.response)
+            })
+          return updatePostById(
+            data.id,
+            {
+              ...data,
+              image: res[0].data,
+              customForm: { data: updateCustomForm },
+            },
+            token
+          )
+            .then(response => {
+              if (preview) {
+                return Router.push(`/admin/campaigns/preview/${data.id}`)
+              } else {
+                return Router.push("/admin/campaigns/table-view")
+              }
+            })
+            .catch(error => {
+              console.error("An error occurred:", error.response)
             })
         })
         .catch(error => {
-          console.error("An error occurred: ", error.response)
+          console.error("An error occurred:", error.response)
         })
     }
   }
