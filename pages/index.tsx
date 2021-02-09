@@ -6,6 +6,7 @@ import fetch from "isomorphic-unfetch"
 import Blog from "@wulpers-ui/core/components/templates/Blog"
 import CardBlog from "@wulpers-ui/core/components/molecules/CardBlog/CardBlog"
 import Grid from "@wulpers-ui/core/components/atoms/Grid"
+import Comments from "../utils/Comments"
 
 const Home = ({ data }: any) => {
   const router = useRouter()
@@ -107,6 +108,7 @@ const Home = ({ data }: any) => {
           </Grid>
         )}
       </Grid>
+      <Comments />
     </Blog>
   )
 }

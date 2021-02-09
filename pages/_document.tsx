@@ -2,8 +2,8 @@ import React from "react"
 import Document, { Html, Head, Main, NextScript } from "next/document"
 import { ServerStyleSheets } from "@wulpers-ui/core/dependencies/material-ui-core"
 
-const APP_NAME = "Change"
-const APP_DESCRIPTION = "Change"
+const APP_NAME = "BoolaNews"
+const APP_DESCRIPTION = "BoolaNews Description"
 
 class MyDocument extends Document {
   static getInitialProps = async ctx => {

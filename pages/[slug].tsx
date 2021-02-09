@@ -1,10 +1,12 @@
+import React from "react"
 import { useRouter } from "next/router"
 import fetch from "isomorphic-unfetch"
 import Error from "next/error"
 import Blog from "@wulpers-ui/core/components/templates/Blog"
 import CardBlog from "@wulpers-ui/core/components/molecules/CardBlog"
 // @ts-ignore
-import styles from "../styles/Home.module.css"
+import Comments from "../utils/Comments"
+
 
 const Slug = (props: any) => {
   const router = useRouter()
@@ -18,7 +20,9 @@ const Slug = (props: any) => {
         content: post.content,
         image: post.image.length ? process.env.strapiServer + post.image[0].url : null
       }} />
+          <Comments />
     </Blog>
+
   } else {
     // @ts-ignore
     return <Error statusCode={404} />
