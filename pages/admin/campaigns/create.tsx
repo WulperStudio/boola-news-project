@@ -12,6 +12,7 @@ import { getSessionData } from "../../../utils/middleware"
 import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import SaveIcon from "@wulpers-ui/core/components/icons/Save"
 import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
+import { uploadMultipleFiles } from "../../../queries"
 
 export default function Create({ token, domain, dataSession, dataBlog }: any) {
   const [data, setData] = useState({
@@ -28,7 +29,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     image: [],
     blog: dataBlog,
     responsable: dataSession,
-    customForm: []
+    customForm: [],
   })
   const [errors, setErrors] = useState({
     title: false,
@@ -38,7 +39,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
   })
   const [loading, setLoading] = useState(true)
 
-  const setCustomForm = customForm => {
+  const setCustomForm = (customForm: any) => {
     setData({ ...data, customForm })
   }
 
@@ -48,7 +49,6 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
 
   function createPost(preview: boolean) {
     const validateCustomForm = ValidateForm(data.customForm)
-
     if (
       !data.title ||
       !data.slug ||
@@ -65,25 +65,30 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
       setCustomForm(validateCustomForm.values)
     } else {
       setLoading(true)
-      const formData = new FormData()
-      data.image.forEach(image => {
-        formData.append("files", image)
-      })
-      return axios
-        .post(`${process.env.strapiServer}/upload`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
+      let files = [data.image[0]]
+      data.customForm
+        .filter(form => form.type === "image")
+        .forEach(image => {
+          files.push(image.value[0])
         })
-        .then(res => {
+      uploadMultipleFiles(files, token)
+        .then((res: any) => {
+          let j = 0
+          const updateCustomForm = data.customForm.map((form, i) => {
+            if (form.type === "image") {
+              j = j + 1
+              return { ...form, value: res[j].data }
+            } else {
+              return form
+            }
+          })
           return axios
             .post(
               `${process.env.strapiServer}/posts`,
               {
                 ...data,
-                image: res.data,
-                customForm: { data: data.customForm },
+                image: res[0].data,
+                customForm: { data: updateCustomForm },
               },
               {
                 headers: {
@@ -91,18 +96,18 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
                 },
               }
             )
-            .then(response => {
+            .then((response: { data: { slug: any } }) => {
               if (preview) {
                 return Router.push(`/${response.data.slug}`)
               } else {
                 return Router.push("/admin/campaigns/table-view")
               }
             })
-            .catch(error => {
+            .catch((error: { response: any }) => {
               console.error("An error occurred:", error.response)
             })
         })
-        .catch(err => {
+        .catch((err: any) => {
           console.error(err)
           return err
         })
@@ -143,6 +148,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
           title="CONTENT -> Title section"
           values={data.customForm}
           setValues={setCustomForm}
+          prefixFiles={process.env.strapiServer}
         />
       </AsideFixed>
     </AdminTheme>

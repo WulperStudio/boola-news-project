@@ -8,10 +8,18 @@ export const deleteFileId = (id: any, token: string) =>
     },
   })
 
-export const uploadFile = (formData,token) =>
-  axios.post(`${process.env.strapiServer}/upload`, formData, {
+export const uploadFile = (file: any, token: string) => {
+  const formData = new FormData()
+  formData.append("files", file)
+  return axios.post(`${process.env.strapiServer}/upload`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     },
   })
+}
+
+export const uploadMultipleFiles = (files: any, token: string) =>
+  axios.all(
+    files.map((file: any) => uploadFile(file, token))
+  )

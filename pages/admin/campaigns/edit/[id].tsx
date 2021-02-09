@@ -114,7 +114,6 @@ export default function EditById({ token }) {
         })
     }
   }
-
   return (
     <AdminTheme
       title=""
@@ -157,6 +156,7 @@ export default function EditById({ token }) {
             title="CONTENT -> Title section"
             values={data.customForm}
             setValues={setCustomForm}
+            prefixFiles={process.env.strapiServer}
           />
         </AsideFixed>
       )}

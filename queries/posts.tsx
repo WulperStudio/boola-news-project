@@ -1,5 +1,12 @@
 import axios from "axios"
 
+export const getAllPostByDomain = (domain, token: string) =>
+  axios.get(`${process.env.strapiServer}/posts?domain=${domain}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
 export const getPostById = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/posts/${id}`, {
     headers: {
