@@ -3,8 +3,9 @@ import Router, {useRouter} from "next/router"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import sideBarConfig from "../../utils/sideBarConfig"
 import { getSessionData } from "../../utils/middleware"
+import Comments from "../../utils/Comments"
 
-const AdminDashboard = () => {
+const AdminDashboard = ({token, dataSession}) => {
   const router = useRouter()
   return (
     <AdminTheme
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
           type: "Button"
         }]}>
       Index Admin
+      <Comments token={token} dataSession={dataSession} />
     </AdminTheme>
   )
 }

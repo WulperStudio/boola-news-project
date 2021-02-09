@@ -13,6 +13,7 @@ import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import SaveIcon from "@wulpers-ui/core/components/icons/Save"
 import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
 import { uploadMultipleFiles } from "../../../queries"
+import Comments from "../../../utils/Comments"
 
 export default function Create({ token, domain, dataSession, dataBlog }: any) {
   const [data, setData] = useState({
@@ -151,6 +152,7 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
           prefixFiles={process.env.strapiServer}
         />
       </AsideFixed>
+      <Comments token={token} dataSession={dataSession} />
     </AdminTheme>
   )
 }

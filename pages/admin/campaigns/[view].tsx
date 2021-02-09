@@ -11,8 +11,9 @@ import FilterIcon from "@wulpers-ui/core/components/icons/Filter"
 
 import { getSessionData } from "../../../utils/middleware"
 import { getAllPostByDomain } from "../../../queries"
+import Comments from "../../../utils/Comments"
 
-const Campaigns = ({ token, domain }) => {
+const Campaigns = ({ token, domain, dataSession }) => {
   const route = useRouter()
   const [dataRows, setDataRows] = useState([])
   const [loading, setLoading] = useState(false)
@@ -207,6 +208,7 @@ const Campaigns = ({ token, domain }) => {
           )}
         </GridContainer>
       )}
+      <Comments token={token} dataSession={dataSession} />
     </AdminTheme>
   )
 }

@@ -3,29 +3,14 @@ import { useRouter } from "next/router"
 import Blog from "@wulpers-ui/core/components/templates/Blog"
 import CardBlog from "@wulpers-ui/core/components/molecules/CardBlog"
 import { getSessionData } from "../../../../utils/middleware"
-import Comments from "@wulpers-ui/core/components/organisms/Comments/Comments"
-import {
-  getCommentsbyDomain,
-  createComment,
-  createMessage,
-  getPostById,
-} from "../../../../queries"
+import { getPostById } from "../../../../queries"
+import Comments from "../../../../utils/Comments"
 
-export default function Preview({ domain, dataSession, token }: any) {
+export default function Preview({ dataSession, token }: any) {
   const route = useRouter()
   const [data, setData] = useState(null)
-  const [comments, setComments] = useState(null)
 
   useEffect(() => {
-    getCommentsbyDomain(window.location.href, token)
-      .then(data => {
-        setComments(data)
-      })
-      .catch(error => {
-        setComments([])
-        console.error("An error occurred:", error.response)
-      })
-
     getPostById(route.query.id, token)
       .then(post => {
         setData(post.data)
@@ -35,30 +20,9 @@ export default function Preview({ domain, dataSession, token }: any) {
       })
   }, [])
 
-  const onChangeComments = (type, data) => {
-    if (type === "newComments") {
-      return createComment(data, token)
-        .then(({ data }) => {
-          return data.id
-        })
-        .catch(error => {
-          return false
-        })
-    } else if (type === "newMessage") {
-      createMessage(data, token)
-        .then(({ data }) => {
-          return true
-        })
-        .catch(error => {
-          return false
-        })
-    }
-    return false
-  }
-
-  if (data) {
-    return (
-      <>
+  return (
+    <>
+      {data && (
         <Blog>
           <br />
           <CardBlog
@@ -72,19 +36,11 @@ export default function Preview({ domain, dataSession, token }: any) {
                 : null,
             }}
           />
+          <Comments token={token} dataSession={dataSession} />
         </Blog>
-        {comments && (
-          <Comments
-            initialValues={comments}
-            userName={dataSession.fullName}
-            onChange={onChangeComments}
-          />
-        )}
-      </>
-    )
-  } else {
-    return <></>
-  }
+      )}
+    </>
+  )
 }
 
 export const getServerSideProps = getSessionData

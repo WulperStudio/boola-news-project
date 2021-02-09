@@ -18,8 +18,9 @@ import {
   publishPostById,
   uploadMultipleFiles,
 } from "../../../../queries"
+import Comments from "../../../../utils/Comments"
 
-export default function EditById({ token }) {
+export default function EditById({ token, dataSession }) {
   const route = useRouter()
   const [data, setData] = useState(null)
   const [errors, setErrors] = useState({
@@ -173,6 +174,7 @@ export default function EditById({ token }) {
           />
         </AsideFixed>
       )}
+      <Comments token={token} dataSession={dataSession} />
     </AdminTheme>
   )
 }
