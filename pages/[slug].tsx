@@ -29,9 +29,9 @@ const Slug = (props: any) => {
       <Chip size="large" label="Exclusive" />
       <div style={{ float:"right"}}><TimeAgo date={1611367941038} /></div>
       <h1>{post.title}</h1>
-      <img src={process.env.strapiServer + post.image[0].url} />
+      <img width="100%" src={process.env.strapiServer + post.image[0].url} />
       <ParseHTML html={post.content} />
-      {post.customForm.data &&
+      {(post.customForm && post.customForm.data) &&
         post.customForm.data.map((form: any, i) => {
           switch (form.type) {
             case "subtitle":
