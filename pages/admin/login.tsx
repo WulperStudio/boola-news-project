@@ -1,7 +1,10 @@
 import React, { useState } from "react"
 import { setLogin } from "../../utils/middleware"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
-import SignIn, { OnSubmitProps } from "@wulpers-ui/core/components/organisms/SignIn/SignIn"
+import SignIn, {
+  OnSubmitProps,
+} from "@wulpers-ui/core/components/organisms/SignIn/SignIn"
+import Comments from "../../utils/Comments"
 
 const LoginAdmin = (props: any) => {
   const [loading, setLoading] = useState(false)
@@ -11,21 +14,27 @@ const LoginAdmin = (props: any) => {
 
   async function onSubmitHandler({ identifier, password }: OnSubmitProps) {
     setLoading(!loading)
-    await setLogin({ identifier, password, redirect: "/admin" }).then(response => {
-      if (!response) {
-        setErrorText("Incorrect email or password!")
+    await setLogin({ identifier, password, redirect: "/admin" }).then(
+      response => {
+        if (!response) {
+          setErrorText("Incorrect email or password!")
+        }
       }
-    })
+    )
     setLoading(false)
   }
 
   return (
     <AdminTheme loginView>
-      <SignIn onSubmit={onSubmitHandler} loading={loading} errorText={errorText}
-              title="Start using \n**Sheldon’s power** " />
+      <SignIn
+        onSubmit={onSubmitHandler}
+        loading={loading}
+        errorText={errorText}
+        title="Start using \n**Sheldon’s power** "
+      />
+      <Comments />
     </AdminTheme>
   )
 }
-
 
 export default LoginAdmin
