@@ -11,8 +11,7 @@ import "@wulpers-ui/core/assets/MediumEditor.styles.min.css"
 import { getSessionData } from "../../../utils/middleware"
 import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import SaveIcon from "@wulpers-ui/core/components/icons/Save"
-import PublishIcon from "@wulpers-ui/core/components/icons/Publish"
-import { uploadMultipleFiles } from "../../../queries"
+import { uploadMultipleFiles, countPostByDomainAndSlug } from "../../../queries"
 import Comments from "../../../utils/Comments"
 
 export default function Create({ token, domain, dataSession, dataBlog }: any) {
@@ -48,18 +47,28 @@ export default function Create({ token, domain, dataSession, dataBlog }: any) {
     setLoading(false)
   }, [])
 
-  function createPost(preview: boolean) {
+  const validateSlug = async (slug: string) => {
+    if (data.slug) {
+      return await countPostByDomainAndSlug(domain, slug, token).then(
+        (res: any) => !!parseInt(res.data, 10)
+      )
+    }
+    return false
+  }
+
+  async function createPost(preview: boolean) {
     const validateCustomForm = ValidateForm(data.customForm)
+    const validatedSlug = await validateSlug(data.slug)
     if (
       !data.title ||
-      !data.slug ||
       !data.image.length ||
       !data.content ||
+      validatedSlug ||
       validateCustomForm.errors
     ) {
       setErrors({
         title: !data.title,
-        slug: !data.slug,
+        slug: validatedSlug,
         image: !data.image.length,
         content: !data.content,
       })
