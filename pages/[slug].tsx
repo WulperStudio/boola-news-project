@@ -15,7 +15,68 @@ const Slug = (props: any) => {
   const router = useRouter()
   const post = props.data.posts[0]
   if (post) {
-    return <Blog>
+    return <Blog
+    nameBlog="BoolaNews"
+      logo="https://boola-news-admin.herokuapp.com/uploads/Group_715_9d0f8b67ac.png"
+      navBarConfig={[
+        {
+          type: "Submenu",
+          items: [
+            { title: "Business", onClick: () => alert("Business") },
+            { title: "AgTech", onClick: () => alert("AgTech") },
+            { title: "FinTech", onClick: () => alert("FinTech") },
+            { title: "AdTech", onClick: () => alert("AdTech") },
+          ],
+        },
+        {
+          type: "separation",
+        },
+        {
+          type: "Button",
+          title: "Favourites",
+          onClick: () => {
+            Router.push("/favourites")
+          },
+          style: "primary-outlined",
+        },
+      ]}
+      navBarLinks={[
+        {
+          text: "Business",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "AgTech",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "FinTech",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "AdTech",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "Cripto",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "Industry",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+        {
+          text: "Industry 4.0",
+          link: "#",
+          onClick: () => alert("hola"),
+        },
+      ]}>
     <br />
     <div
       style={{
