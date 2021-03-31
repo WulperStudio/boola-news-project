@@ -18,6 +18,16 @@ const sideBarConfig = (page: string) => [
       Router.push("/admin/campaigns/table-view")
     }
   },
+
+  {
+    title: "Landings",
+    active: page === "/admin/landings/table-view" || page === "/admin/landings/cards-view",
+    icon: <Lightning />,
+    type: "primary",
+    onClick: function() {
+      Router.push("/admin/landings/cards-view")
+    }
+  },
   {
     title: "Contacts",
     active: page === "/admin/contacts/table-view" || page === "/admin/campaigns/cards-view",
