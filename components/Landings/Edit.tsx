@@ -15,12 +15,12 @@ const fetchLandings = (id: any, token: string) =>
   })
 
 const navBarConfig = [
-    {
-        title: "Fav",
-        icon: "T",
-        onClick: () => console.log("test"),
-        type: "Fav",
-      },
+  {
+    title: "Fav",
+    icon: "T",
+    onClick: () => console.log("test"),
+    type: "Fav",
+  },
 ]
 
 export const LandingsEdit = ({ token }) => {
