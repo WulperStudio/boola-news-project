@@ -12,7 +12,7 @@
   "dependencies": {
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
-    "@tinacms/git-client": "0.38.0",
+    "@tinacms/git-client": "0.39.0",
     "@wulpers-ui/core": "0.0.1-beta-20",
     "@zeit/next-css": "1.0.1",
     "axios": "0.21.1",
@@ -22,16 +22,16 @@
     "isomorphic-unfetch": "3.1.0",
     "js-cookie": "2.2.1",
     "jsonwebtoken": "8.5.1",
-    "next": "10.0.9",
+    "next": "10.1.2",
     "react": "17.0.1",
     "react-async-hook": "3.6.2",
     "react-dom": "17.0.1",
     "react-markdown": "5.0.3",
-    "react-tinacms-editor": "0.38.0",
-    "react-tinacms-inline": "0.38.0",
+    "react-tinacms-editor": "0.39.0",
+    "react-tinacms-inline": "0.39.0",
     "slug": "4.0.3",
-    "styled-components": "5.2.1",
-    "tinacms": "0.38.0"
+    "styled-components": "5.2.3",
+    "tinacms": "0.39.0"
   },
   "devDependencies": {
     "@types/js-cookie": "2.2.6",
