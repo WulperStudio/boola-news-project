@@ -5,7 +5,7 @@ module.exports = withCSS({
     url: false
   },
   env: {
-    strapiServer: "https://boola-news-admin.herokuapp.com",
+    strapiServer: "http://localhost:1337",
     secretKey: "AmSRwb8gDhsgCa2LbAta3Psmc47cDC5S"
   }
 })

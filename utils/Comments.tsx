@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {
-  createComment,
-  createMessage,
-  getCommentsbyDomain
-} from "../queries"
+import { createComment, createMessage, getCommentsbyDomain } from "../queries"
 import CommentsComponent from "@wulpers-ui/core/components/organisms/Comments/Comments"
 
 export default function Comments({
@@ -52,7 +48,11 @@ export default function Comments({
       {comments && (
         <CommentsComponent
           initialValues={comments}
-          userImage={dataSession ? `${process.env.strapiServer}${dataSession.avatar[0].formats.thumbnail.url}`  : null}
+          userImage={
+            dataSession
+              ? `${process.env.strapiServer}${dataSession.avatar[0].formats.thumbnail.url}`
+              : null
+          }
           userName={dataSession ? dataSession.fullName : "Anonymous"}
           onChange={onChangeComments}
         />
