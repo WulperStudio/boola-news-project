@@ -1,6 +1,6 @@
 {
   "name": "boola-news-project",
-  "version": "0.0.1-beta-19",
+  "version": "0.0.1-beta-21",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,7 +13,7 @@
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
     "@tinacms/git-client": "0.39.0",
-    "@wulpers-ui/core": "0.0.1-beta-20",
+    "@wulpers-ui/core": "0.0.1-beta-21",
     "@zeit/next-css": "1.0.1",
     "axios": "0.21.1",
     "cookie": "0.4.1",

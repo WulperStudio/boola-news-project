@@ -13,39 +13,33 @@ const updateLandings = (id: any, data, token: string) =>
   })
 
 export default function TinaEdit({ id, token, initialValues, loading, error }) {
-  if (loading) {
-    return <div />
-  } else if (error) {
-    return <div>Error Page</div>
-  } else {
-    const cms = useCMS()
-    const formConfig = {
-      id: "TinaLanding",
-      initialValues: initialValues,
-      onSubmit(data) {
-        console.log("data>>>", JSON.stringify(data))
-        cms.alerts.success("Saved!")
-      },
-      label: "Site information",
-      fields: configTinaForm,
-    }
-    const [data, form] = useForm(formConfig)
+  const cms = useCMS()
+  const formConfig = {
+    id: "./data/data.js",
+    initialValues: initialValues,
+    onSubmit(data) {
+      console.log("data>>>", JSON.stringify(data))
+      cms.alerts.success("Saved!")
+    },
+    label: "Site information",
+    fields: configTinaForm,
+  }
+  const [data, form] = useForm(formConfig)
 
-    useEffect(() => {
+  /*useEffect(() => {
       //console.log("data>>>", initialValues, data)
       updateLandings(id, { data }, token)
-    }, [data])
-    
-    usePlugin(form)
+    }, [data])*/
 
-    return (
-      <div className="home">
-        <InlineForm form={form}>
-          <InlineBlocks name="blocks" blocks={HOME_BLOCKS} />
-        </InlineForm>
-      </div>
-    )
-  }
+  usePlugin(form)
+
+  return (
+    <div className="home">
+      <InlineForm form={form}>
+        <InlineBlocks name="blocks" blocks={HOME_BLOCKS} />
+      </InlineForm>
+    </div>
+  )
 }
 
 const HOME_BLOCKS = {

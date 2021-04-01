@@ -57,15 +57,17 @@ export const LandingsEdit = ({ token }) => {
       navBarConfig={navBarConfig}
       loading={loading}
     >
-      <TinaProvider cms={cms}>
-        <TinaEdit
-          id={query.id}
-          initialValues={result && !loading && !error ? result.data.data : {}}
-          token={token}
-          error={error}
-          loading={loading}
-        />
-      </TinaProvider>
+      {!loading && !error && (
+        <TinaProvider cms={cms}>
+          <TinaEdit
+            id={query.id}
+            initialValues={result && !loading && !error ? result.data.data : {}}
+            token={token}
+            error={error}
+            loading={loading}
+          />
+        </TinaProvider>
+      )}
     </AdminTheme>
   )
 }
