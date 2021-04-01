@@ -4,7 +4,8 @@ import axios from "axios"
 import { useAsync } from "react-async-hook"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import Plus from "@wulpers-ui/core/components/icons/Plus"
-
+import Filter from "@wulpers-ui/core/components/icons/Filter"
+import Filters from "@wulpers-ui/core/components/molecules/Filters"
 import LandingsCards from "./Cards"
 
 const fetchLandings = (domain: string, token: string) =>
@@ -23,6 +24,11 @@ const navBarConfig = [
     },
     type: "Fav",
   },
+  {
+    title: "Fav",
+    icon: <Filter />,
+    type: "Fav",
+  }
 ]
 
 export const LandingsList = ({ token, domain, dataSession }) => {
@@ -34,6 +40,7 @@ export const LandingsList = ({ token, domain, dataSession }) => {
       navBarConfig={navBarConfig}
       loading={loading}
     >
+      <Filters />
       <LandingsCards
         data={result && !loading && !error ? result.data : []}
         loading={loading}
@@ -42,4 +49,3 @@ export const LandingsList = ({ token, domain, dataSession }) => {
     </AdminTheme>
   )
 }
-

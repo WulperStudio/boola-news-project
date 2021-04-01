@@ -1,6 +1,6 @@
 import React from "react"
 import Document, { Html, Head, Main, NextScript } from "next/document"
-import { ServerStyleSheets } from "@wulpers-ui/core/dependencies/material-ui-core"
+import { ServerStyleSheets } from "@material-ui/core"
 
 const APP_NAME = "BoolaNews"
 const APP_DESCRIPTION = "BoolaNews Description"

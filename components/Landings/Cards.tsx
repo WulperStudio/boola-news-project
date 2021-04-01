@@ -3,7 +3,7 @@ import Router from "next/router"
 import GridContainer from "@wulpers-ui/core/components/containers/Grid"
 import Fab from "@wulpers-ui/core/components/atoms/Fab"
 import Card from "@wulpers-ui/core/components/molecules/Card"
-import FilterIcon from "@wulpers-ui/core/components/icons/Filter"
+import Points from "@wulpers-ui/core/components/icons/Points"
 
 const LandingsCards = ({ data, loading, error }) => {
   if (loading) {
@@ -25,7 +25,7 @@ const LandingsCards = ({ data, loading, error }) => {
                   Router.push(`/admin/landings/edit/${id}`)
                 }}
               >
-                <FilterIcon />
+                <Points />
               </Fab>
             }
             quantities={[
