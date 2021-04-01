@@ -18,16 +18,19 @@ const navBarConfig = [
   {
     title: "Fav",
     icon: "T",
-    onClick: () => console.log("test"),
+    onClick: () => {
+      console.log("test")
+      return false
+    },
     type: "Fav",
   },
 ]
 
-export const LandingsEdit = ({ token }) => {
+export const LandingsEdit = ({ token, edit }) => {
   const { query } = useRouter()
   const { result, error, loading } = useAsync(fetchLandings, [query.id, token])
   const cms = new TinaCMS({
-    enabled: true,
+    enabled: edit,
     sidebar: {
       buttons: {
         save: "Apply",
@@ -35,6 +38,7 @@ export const LandingsEdit = ({ token }) => {
       },
     },
     toolbar: false,
+    //@ts-ignore
     media: new MyGitMediaStore(),
   })
 
@@ -49,6 +53,7 @@ export const LandingsEdit = ({ token }) => {
       cms.plugins.add(HtmlFieldPlugin)
     }
   )
+
 
   return (
     <AdminTheme

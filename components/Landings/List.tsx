@@ -19,7 +19,7 @@ const navBarConfig = [
     title: "Fav",
     icon: <Plus />,
     onClick: function () {
-      Router.push("/admin/campaigns/create")
+      Router.push("/admin/landings/create")
     },
     type: "Fav",
   },
