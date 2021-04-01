@@ -14,23 +14,12 @@ const fetchLandings = (id: any, token: string) =>
     },
   })
 
-const navBarConfig = [
-  {
-    title: "Fav",
-    icon: "T",
-    onClick: () => {
-      console.log("test")
-      return false
-    },
-    type: "Fav",
-  },
-]
-
-export const LandingsEdit = ({ token, edit }) => {
+export const LandingsEdit = ({ token }) => {
   const { query } = useRouter()
   const { result, error, loading } = useAsync(fetchLandings, [query.id, token])
+
   const cms = new TinaCMS({
-    enabled: edit,
+    enabled: true,
     sidebar: {
       buttons: {
         save: "Apply",
@@ -54,12 +43,22 @@ export const LandingsEdit = ({ token, edit }) => {
     }
   )
 
-
   return (
     <AdminTheme
       title="**Edit Landings**"
       buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
-      navBarConfig={navBarConfig}
+      navBarConfig={[
+        {
+          title: "Fav",
+          icon: "P",
+          onClick: function () {
+            if (result) {
+              Router.push("/landings" + result.data.path)
+            }
+          },
+          type: "Fav",
+        },
+      ]}
       loading={loading}
     >
       {!loading && !error && (
@@ -68,8 +67,7 @@ export const LandingsEdit = ({ token, edit }) => {
             id={query.id}
             initialValues={result && !loading && !error ? result.data.data : {}}
             token={token}
-            error={error}
-            loading={loading}
+            edit={true}
           />
         </TinaProvider>
       )}

@@ -12,7 +12,7 @@ const updateLandings = (id: any, data, token: string) =>
     },
   })
 
-export default function TinaEdit({ id, token, initialValues, loading, error }) {
+export default function TinaEdit({ id, token, initialValues, edit }) {
   const cms = useCMS()
   const formConfig = {
     id: "./data/data.js",
@@ -26,10 +26,11 @@ export default function TinaEdit({ id, token, initialValues, loading, error }) {
   }
   const [data, form] = useForm(formConfig)
 
-  /*useEffect(() => {
-      //console.log("data>>>", initialValues, data)
+  useEffect(() => {
+    if (edit) {
       updateLandings(id, { data }, token)
-    }, [data])*/
+    }
+  }, [data])
 
   usePlugin(form)
 

@@ -14,13 +14,7 @@ export const LandingsPublic = ({ data }) => {
 
   return (
     <TinaProvider cms={cms}>
-      <TinaEdit
-        id={data.id}
-        initialValues={data}
-        token=""
-        error={false}
-        loading={false}
-      />
+      <TinaEdit id={data.id} initialValues={data} edit={false} token="" />
     </TinaProvider>
   )
 }
