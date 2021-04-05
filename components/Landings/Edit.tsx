@@ -1,6 +1,6 @@
 import React from "react"
 import Router, { useRouter } from "next/router"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import { useAsync } from "react-async-hook"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import { TinaProvider, TinaCMS } from "tinacms"
@@ -8,15 +8,21 @@ import { MyGitMediaStore } from "./MyMediaStore"
 import TinaEdit from "./Tina"
 
 const fetchLandings = (id: any, token: string) =>
-  axios.get(`${process.env.strapiServer}/pages/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  axios.get(
+    `${process.env.strapiServer}/pages-histories?date=latest&pageId=${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
 
 export const LandingsEdit = ({ token }) => {
   const { query } = useRouter()
-  const { result, error, loading } = useAsync(fetchLandings, [query.id, token])
+  const { result, error, loading } = useAsync<AxiosResponse>(fetchLandings, [
+    query.id,
+    token,
+  ])
 
   const cms = new TinaCMS({
     enabled: true,
@@ -52,8 +58,8 @@ export const LandingsEdit = ({ token }) => {
           title: "Fav",
           icon: "P",
           onClick: function () {
-            if (result) {
-              Router.push("/landings" + result.data.path)
+            if (loading && !error && result) {
+              Router.push("/landings" + result.data[0].path)
             }
           },
           type: "Fav",
@@ -64,8 +70,9 @@ export const LandingsEdit = ({ token }) => {
       {!loading && !error && (
         <TinaProvider cms={cms}>
           <TinaEdit
-            id={query.id}
-            initialValues={result && !loading && !error ? result.data.data : {}}
+            initialValues={
+              result && result.data.length ? result.data[0] : {}
+            }
             token={token}
             edit={true}
           />
