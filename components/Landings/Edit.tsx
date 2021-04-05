@@ -10,7 +10,7 @@ import { MyGitMediaStore } from "./MyMediaStore"
 import TinaEdit from "./Tina"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 
-const fetchLandings = (id: any, status: string, token: string) =>
+const fetchLandings = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
