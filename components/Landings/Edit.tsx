@@ -125,8 +125,8 @@ export const LandingsEdit = ({ token }) => {
         style={
           mobile
             ? {
-                width: 375,
-                height: 812,
+                width: 414,
+                height: 736,
                 marginLeft: "auto",
                 marginRight: "auto",
                 border: "1px solid #ccc",
