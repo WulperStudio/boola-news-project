@@ -1,18 +1,40 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Router, { useRouter } from "next/router"
 import axios, { AxiosResponse } from "axios"
 import { useAsync } from "react-async-hook"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
+import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
+import Publish from "@wulpers-ui/core/components/icons/Publish"
 import { TinaProvider, TinaCMS } from "tinacms"
 import { MyGitMediaStore } from "./MyMediaStore"
 import TinaEdit from "./Tina"
+import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 
-const fetchLandings = (id: any, token: string) =>
+const fetchLandings = (id: any, status: string, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
+
+const publishLanding = (id: any, token: string) =>
+  axios
+    .get(`${process.env.strapiServer}/pages/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(response =>
+      axios.put(
+        `${process.env.strapiServer}/pages/${id}`,
+        { data: response.data.page_latest.data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+    )
 
 export const LandingsEdit = ({ token }) => {
   const { query } = useRouter()
@@ -20,6 +42,16 @@ export const LandingsEdit = ({ token }) => {
     query.id,
     token,
   ])
+  const [loadingPage, setloadingPage] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+
+  useEffect(() => setloadingPage(loading), [loading])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowMessage(false)
+    }, 3000)
+  }, [showMessage])
 
   const cms = new TinaCMS({
     enabled: true,
@@ -53,14 +85,29 @@ export const LandingsEdit = ({ token }) => {
       navBarConfig={[
         {
           title: "Fav",
-          icon: "P",
+          icon: <EyeIcon />,
           onClick: function () {
-            Router.push("/landings" + result.data.path)
+            window.open("/landings" + result.data.path, "_blank")
+          },
+          type: "Fav",
+        },
+        {
+          title: "Fav",
+          icon: <Publish />,
+          onClick: function () {
+            setloadingPage(true)
+            publishLanding(query.id, token).then(({ status }) => {
+              status === 200 && setShowMessage(true)
+              setloadingPage(false)
+              setTimeout(() => {
+                window.open("/landings" + result.data.path, "_blank")
+              }, 2000)
+            })
           },
           type: "Fav",
         },
       ]}
-      loading={loading}
+      loading={loadingPage}
     >
       {!loading && !error && (
         <TinaProvider cms={cms}>
@@ -73,6 +120,13 @@ export const LandingsEdit = ({ token }) => {
           />
         </TinaProvider>
       )}
+
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={showMessage}
+        message="Landing successfully publish!!!"
+        key={"horizontal"}
+      />
     </AdminTheme>
   )
 }
