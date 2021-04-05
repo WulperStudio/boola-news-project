@@ -29,6 +29,7 @@
     "react-markdown": "5.0.3",
     "react-tinacms-editor": "0.39.0",
     "react-tinacms-inline": "0.39.0",
+    "remark-gfm": "^1.0.0",
     "slug": "4.0.3",
     "styled-components": "5.2.3",
     "tinacms": "0.39.0"
