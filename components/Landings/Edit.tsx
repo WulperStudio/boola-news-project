@@ -9,6 +9,7 @@ import { TinaProvider, TinaCMS } from "tinacms"
 import { MyGitMediaStore } from "./MyMediaStore"
 import TinaEdit from "./Tina"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
+import Collapse from "@material-ui/core/Collapse/Collapse"
 
 const fetchLandings = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {
@@ -44,6 +45,7 @@ export const LandingsEdit = ({ token }) => {
   ])
   const [loadingPage, setloadingPage] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
+  const [mobile, setMobile] = useState(false)
 
   useEffect(() => setloadingPage(loading), [loading])
 
@@ -84,6 +86,15 @@ export const LandingsEdit = ({ token }) => {
       buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
       navBarConfig={[
         {
+          title: "Switch",
+          onClick: function (view: string) {
+            if (view) {
+              setMobile(!mobile)
+            }
+          },
+          type: "Switch",
+        },
+        {
           title: "Fav",
           icon: <EyeIcon />,
           onClick: function () {
@@ -109,17 +120,35 @@ export const LandingsEdit = ({ token }) => {
       ]}
       loading={loadingPage}
     >
-      {!loading && !error && (
-        <TinaProvider cms={cms}>
-          <TinaEdit
-            initialValues={
-              result && result.data.page_latest ? result.data.page_latest : {}
-            }
-            token={token}
-            edit={true}
-          />
-        </TinaProvider>
-      )}
+      <Collapse in={true}>
+      <div
+        style={
+          mobile
+            ? {
+                width: 375,
+                height: 812,
+                marginLeft: "auto",
+                marginRight: "auto",
+                border: "1px solid #ccc",
+                overflowY: "auto",
+                transition: "width 2s, height 4s"
+              }
+            : {transition: "width 2s, height 4s"}
+        }
+      >
+        {!loading && !error && (
+          <TinaProvider cms={cms}>
+            <TinaEdit
+              initialValues={
+                result && result.data.page_latest ? result.data.page_latest : {}
+              }
+              token={token}
+              edit={true}
+            />
+          </TinaProvider>
+        )}
+      </div>
+      </Collapse>
 
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

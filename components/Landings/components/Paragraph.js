@@ -10,6 +10,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import { InlineWysiwyg } from "react-tinacms-editor";
 import Typography from "@material-ui/core/Typography";
+import gfm from 'remark-gfm'
 
 function Paragraph({ index, data }) {
   const { text_color, text_align, font_size, subtext, styles } = data;
@@ -27,7 +28,7 @@ function Paragraph({ index, data }) {
         }}
       >
         <InlineWysiwyg name="subtext" format="markdown">
-          <ReactMarkdown source={subtext} />
+          <ReactMarkdown plugins={[gfm]} source={subtext} />
         </InlineWysiwyg>
       </Typography>
     </BlocksControls>
