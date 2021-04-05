@@ -8,14 +8,11 @@ import { MyGitMediaStore } from "./MyMediaStore"
 import TinaEdit from "./Tina"
 
 const fetchLandings = (id: any, token: string) =>
-  axios.get(
-    `${process.env.strapiServer}/pages-histories?date=latest&pageId=${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+  axios.get(`${process.env.strapiServer}/pages/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
 export const LandingsEdit = ({ token }) => {
   const { query } = useRouter()
@@ -58,9 +55,7 @@ export const LandingsEdit = ({ token }) => {
           title: "Fav",
           icon: "P",
           onClick: function () {
-            if (loading && !error && result) {
-              Router.push("/landings" + result.data[0].path)
-            }
+            Router.push("/landings" + result.data.path)
           },
           type: "Fav",
         },
@@ -71,7 +66,7 @@ export const LandingsEdit = ({ token }) => {
         <TinaProvider cms={cms}>
           <TinaEdit
             initialValues={
-              result && result.data.length ? result.data[0] : {}
+              result && result.data.page_latest ? result.data.page_latest : {}
             }
             token={token}
             edit={true}

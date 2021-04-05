@@ -7,7 +7,6 @@ import { heroBlock } from "./components/Hero"
 import configTinaForm from "./configTinaForm"
 
 const updateLandings = (id: any, data, token: string) =>{
-  console.log("hitoryId>>>",id)
   return axios.put(`${process.env.strapiServer}/pages-histories/${id}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -21,7 +20,6 @@ export default function TinaEdit({ token, initialValues, edit }) {
     id: "./data/data.js",
     initialValues: initialValues.data,
     onSubmit(data) {
-      console.log("data>>>", JSON.stringify(data))
       cms.alerts.success("Saved!")
     },
     label: "Site information",
@@ -32,7 +30,6 @@ export default function TinaEdit({ token, initialValues, edit }) {
   useEffect(() => {
     if (edit) {
       updateLandings(hitoryId, { data }, token).then((result: any) => {
-        console.log("result>>>", result.data.id)
         setHitoryId(result.data.id)
       })
     }
