@@ -2,18 +2,21 @@ import React from "react"
 import { BlocksControls, InlineBlocks } from "react-tinacms-inline"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
+import Button from "@material-ui/core/Button"
 import { HeadingBlock } from "./Heading"
 import { ParagraphBlock } from "./Paragraph"
 import { ActionsBlock } from "./Actions"
 import { ListBlock } from "./List"
-import { jsonForm } from "../utils"
+import { jsonForm, jsonParse } from "../utils"
 
 const BACKGROUND_IMAGE_NONE =
   "https://fakeimg.pl/420x100/?retina=1&text=Upload%20File"
 const STRAPI_URL = "https://boola-news-admin.herokuapp.com"
 
-export function Hero({ index, data }) {
+export function HeroWithNavbar({ index, data }) {
   const {
+    logo,
+    items,
     text_color,
     background_color,
     align,
@@ -23,17 +26,16 @@ export function Hero({ index, data }) {
     paddingBottom,
     paddingLeft,
     paddingRight,
+    styles,
   } = data
-  console.log(background_color)
+  const stylesParse = jsonParse(styles)
   return (
     <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
       <div
-        className="hero"
+        className="hero-with-navbar"
         style={{
           width: "100%",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           flexDirection: "column",
           position: "relative",
           color: text_color || "#000",
@@ -51,6 +53,7 @@ export function Hero({ index, data }) {
           paddingBottom,
           paddingLeft,
           paddingRight,
+          ...stylesParse,
         }}
       >
         <Container>
@@ -62,7 +65,29 @@ export function Hero({ index, data }) {
             alignItems="center"
           >
             {align === "right" && <Grid item xs={6} />}
-            <Grid item xs={6}>
+            <Grid item xs={12}>
+              <nav
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  {logo && <img src={logo} alt="test" />}
+                  {!logo && (
+                    <img
+                      src="https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056"
+                      alt="test"
+                    />
+                  )}
+                </div>
+                <div>
+                  <a href="/#">test</a>
+                  <Button variant="contained" color="primary">
+                    test
+                  </Button>
+                </div>
+              </nav>
               <InlineBlocks
                 name="content"
                 blocks={CONTENT_BLOCKS}
@@ -77,10 +102,10 @@ export function Hero({ index, data }) {
   )
 }
 
-export const heroBlock = {
-  Component: Hero,
+export const HeroWithNavbarBlock = {
+  Component: HeroWithNavbar,
   template: {
-    label: "Hero",
+    label: "Hero with Navbar",
     defaultItem: {
       background_color: "#051e26",
       text_color: "#fffaf4",
@@ -88,8 +113,9 @@ export const heroBlock = {
       background_image: "",
       paddingTop: 0,
       height: 400,
-      paddingBottom: 32,
-      paddingLeft: 32,
+      paddingTop: 12,
+      paddingBottom: 12,
+      paddingLeft: 0,
       paddingRight: 0,
     },
     fields: [
@@ -103,6 +129,17 @@ export const heroBlock = {
       {
         name: "background_image",
         label: "Background Image",
+        component: "image",
+        parse: media =>
+          media.filename ? `${STRAPI_URL}/uploads/${media.filename}` : "",
+        uploadDir: () => "/",
+        previewSrc: src => src,
+        focusRing: false,
+        clearable: true,
+      },
+      {
+        name: "logo",
+        label: "Logo",
         component: "image",
         parse: media =>
           media.filename ? `${STRAPI_URL}/uploads/${media.filename}` : "",
@@ -133,13 +170,13 @@ export const heroBlock = {
         name: "paddingTop",
         label: "padding Top",
         component: "number",
-        defaultValue: 32,
+        defaultValue: 12,
       },
       {
         name: "paddingBottom",
         label: "padding Bottom",
         component: "number",
-        defaultValue: 32,
+        defaultValue: 12,
       },
       {
         name: "paddingLeft",

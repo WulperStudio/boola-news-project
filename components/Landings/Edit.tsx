@@ -121,33 +121,35 @@ export const LandingsEdit = ({ token }) => {
       loading={loadingPage}
     >
       <Collapse in={true}>
-      <div
-        style={
-          mobile
-            ? {
-                width: 414,
-                height: 736,
-                marginLeft: "auto",
-                marginRight: "auto",
-                border: "1px solid #ccc",
-                overflowY: "auto",
-                transition: "width 2s, height 4s"
-              }
-            : {transition: "width 2s, height 4s"}
-        }
-      >
         {!loading && !error && (
           <TinaProvider cms={cms}>
-            <TinaEdit
-              initialValues={
-                result && result.data.page_latest ? result.data.page_latest : {}
+            <div
+              style={
+                mobile
+                  ? {
+                      width: 414,
+                      height: 736,
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      border: "1px solid #ccc",
+                      overflowY: "auto",
+                      transition: "width 2s, height 4s",
+                    }
+                  : { transition: "width 2s, height 4s" }
               }
-              token={token}
-              edit={true}
-            />
+            >
+              <TinaEdit
+                initialValues={
+                  result && result.data.page_latest
+                    ? result.data.page_latest
+                    : {}
+                }
+                token={token}
+                edit={true}
+              />
+            </div>
           </TinaProvider>
         )}
-      </div>
       </Collapse>
 
       <Snackbar
