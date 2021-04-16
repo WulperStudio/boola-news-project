@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import axios from "axios"
 import { useAsync } from "react-async-hook"
 import { TinaProvider, TinaCMS } from "tinacms"
-import TinaEdit from "./Tina"
+import Editor from "./tina/Editor"
 
 export const LandingsPublic = ({ data }) => {
   const cms = new TinaCMS({
@@ -14,7 +14,7 @@ export const LandingsPublic = ({ data }) => {
 
   return (
     <TinaProvider cms={cms}>
-      <TinaEdit initialValues={data} edit={false} token="" />
+      <Editor initialValues={data} edit={false} token="" />
     </TinaProvider>
   )
 }

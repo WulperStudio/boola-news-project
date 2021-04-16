@@ -1,6 +1,6 @@
 import { GitMediaStore } from "@tinacms/git-client";
 
-export class MyGitMediaStore extends GitMediaStore {
+export class MediaStore extends GitMediaStore {
   strapiUrl = "https://boola-news-admin.herokuapp.com";
 
   async previewSrc(id) {

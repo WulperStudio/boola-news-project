@@ -13,7 +13,7 @@ const updateLandings = (id: any, data, token: string) =>{
     },
   })}
 
-export default function TinaEdit({ token, initialValues, edit }) {
+export default function Editor({ token, initialValues, edit }) {
   const [hitoryId, setHitoryId] = useState(initialValues.id)
   const cms = useCMS()
   const formConfig = {

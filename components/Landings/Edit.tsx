@@ -5,11 +5,9 @@ import { useAsync } from "react-async-hook"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
 import Publish from "@wulpers-ui/core/components/icons/Publish"
-import { TinaProvider, TinaCMS } from "tinacms"
-import { MyGitMediaStore } from "./MyMediaStore"
-import TinaEdit from "./Tina"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 import Collapse from "@material-ui/core/Collapse/Collapse"
+import { Provider } from "./tina/Provider"
 
 const fetchLandings = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {
@@ -55,114 +53,65 @@ export const LandingsEdit = ({ token }) => {
     }, 3000)
   }, [showMessage])
 
-  if (!loading && !loadingPage) {
-    console.log(">>>rendering")
-    const cms = new TinaCMS({
-      enabled: true,
-      sidebar: {
-        buttons: {
-          save: "Apply",
-          reset: null,
+  return (
+    <AdminTheme
+      title="**Edit Landings**"
+      buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
+      navBarConfig={[
+        {
+          title: "Switch",
+          onClick: function (view: string) {
+            if (view) {
+              setMobile(!mobile)
+            }
+          },
+          type: "Switch",
         },
-      },
-      toolbar: false,
-      //@ts-ignore
-      media: new MyGitMediaStore(),
-    })
-
-    cms.plugins.remove({
-      __type: "screen",
-      name: "Media Manager",
-    })
-
-    import("react-tinacms-editor").then(
-      ({ MarkdownFieldPlugin, HtmlFieldPlugin }) => {
-        cms.plugins.add(MarkdownFieldPlugin)
-        cms.plugins.add(HtmlFieldPlugin)
-      }
-    )
-
-    return (
-      <AdminTheme
-        title="**Edit Landings**"
-        buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
-        navBarConfig={[
-          {
-            title: "Switch",
-            onClick: function (view: string) {
-              if (view) {
-                setMobile(!mobile)
-              }
-            },
-            type: "Switch",
+        {
+          title: "Fav",
+          icon: <EyeIcon />,
+          onClick: function () {
+            window.open("/landings" + result.data.path, "_blank")
           },
-          {
-            title: "Fav",
-            icon: <EyeIcon />,
-            onClick: function () {
-              window.open("/landings" + result.data.path, "_blank")
-            },
-            type: "Fav",
+          type: "Fav",
+        },
+        {
+          title: "Fav",
+          icon: <Publish />,
+          onClick: function () {
+            setloadingPage(true)
+            publishLanding(query.id, token).then(({ status }) => {
+              status === 200 && setShowMessage(true)
+              setloadingPage(false)
+              setTimeout(() => {
+                window.open("/landings" + result.data.path, "_blank")
+              }, 2000)
+            })
           },
-          {
-            title: "Fav",
-            icon: <Publish />,
-            onClick: function () {
-              setloadingPage(true)
-              publishLanding(query.id, token).then(({ status }) => {
-                status === 200 && setShowMessage(true)
-                setloadingPage(false)
-                setTimeout(() => {
-                  window.open("/landings" + result.data.path, "_blank")
-                }, 2000)
-              })
-            },
-            type: "Fav",
-          },
-        ]}
-        loading={loadingPage}
-      >
-        <Collapse in={true}>
-          {!loading && !error && (
-            <TinaProvider cms={cms}>
-              <div
-                style={
-                  mobile
-                    ? {
-                        width: 414,
-                        height: 736,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        border: "1px solid #ccc",
-                        overflowY: "auto",
-                        transition: "width 2s, height 4s",
-                      }
-                    : { transition: "width 2s, height 4s" }
-                }
-              >
-                <TinaEdit
-                  initialValues={
-                    result && result.data.page_latest
-                      ? result.data.page_latest
-                      : {}
-                  }
-                  token={token}
-                  edit={true}
-                />
-              </div>
-            </TinaProvider>
-          )}
-        </Collapse>
+          type: "Fav",
+        },
+      ]}
+      loading={loadingPage}
+    >
+      <Collapse in={true}>
+        {!loading && !loadingPage && !error && (
+          <Provider
+            edit={true}
+            token={token}
+            mobile={mobile}
+            initialValues={
+              result && result.data.page_latest ? result.data.page_latest : {}
+            }
+          />
+        )}
+      </Collapse>
 
-        <Snackbar
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          open={showMessage}
-          message="Landing successfully publish!!!"
-          key={"horizontal"}
-        />
-      </AdminTheme>
-    )
-  } else {
-    return "Loading"
-  }
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={showMessage}
+        message="Landing successfully publish!!!"
+        key={"horizontal"}
+      />
+    </AdminTheme>
+  )
 }
