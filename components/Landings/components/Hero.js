@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid"
 import { HeadingBlock } from "./Heading"
 import { ParagraphBlock } from "./Paragraph"
 import { ActionsBlock } from "./Actions"
+import { ImageBlock } from "./Image"
 import { ListBlock } from "./List"
 import { jsonForm } from "../utils"
 
@@ -62,7 +63,7 @@ export function Hero({ index, data }) {
             alignItems="center"
           >
             {align === "right" && <Grid item xs={6} />}
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <InlineBlocks
                 name="content"
                 blocks={CONTENT_BLOCKS}
@@ -163,4 +164,5 @@ const CONTENT_BLOCKS = {
   p: ParagraphBlock,
   list: ListBlock,
   actions: ActionsBlock,
+  image: ImageBlock,
 }
