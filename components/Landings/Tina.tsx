@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import Router from "next/router"
 import { useCMS, useForm, usePlugin } from "tinacms"
 import axios from "axios"
 import { InlineForm, InlineBlocks } from "react-tinacms-inline"

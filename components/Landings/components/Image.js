@@ -2,6 +2,8 @@ import React from "react"
 import { BlocksControls } from "react-tinacms-inline"
 import { jsonForm, jsonParse } from "../utils"
 
+const STRAPI_URL = "https://boola-news-admin.herokuapp.com";
+
 function Image({ index, data }) {
   const { scr, width, height, styles, alt, align } = data
   const stylesParse = jsonParse(styles)

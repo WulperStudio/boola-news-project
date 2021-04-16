@@ -55,109 +55,114 @@ export const LandingsEdit = ({ token }) => {
     }, 3000)
   }, [showMessage])
 
-  const cms = new TinaCMS({
-    enabled: true,
-    sidebar: {
-      buttons: {
-        save: "Apply",
-        reset: null,
+  if (!loading && !loadingPage) {
+    console.log(">>>rendering")
+    const cms = new TinaCMS({
+      enabled: true,
+      sidebar: {
+        buttons: {
+          save: "Apply",
+          reset: null,
+        },
       },
-    },
-    toolbar: false,
-    //@ts-ignore
-    media: new MyGitMediaStore(),
-  })
+      toolbar: false,
+      //@ts-ignore
+      media: new MyGitMediaStore(),
+    })
 
-  cms.plugins.remove({
-    __type: "screen",
-    name: "Media Manager",
-  })
+    cms.plugins.remove({
+      __type: "screen",
+      name: "Media Manager",
+    })
 
-  import("react-tinacms-editor").then(
-    ({ MarkdownFieldPlugin, HtmlFieldPlugin }) => {
-      cms.plugins.add(MarkdownFieldPlugin)
-      cms.plugins.add(HtmlFieldPlugin)
-    }
-  )
+    import("react-tinacms-editor").then(
+      ({ MarkdownFieldPlugin, HtmlFieldPlugin }) => {
+        cms.plugins.add(MarkdownFieldPlugin)
+        cms.plugins.add(HtmlFieldPlugin)
+      }
+    )
 
-  return (
-    <AdminTheme
-      title="**Edit Landings**"
-      buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
-      navBarConfig={[
-        {
-          title: "Switch",
-          onClick: function (view: string) {
-            if (view) {
-              setMobile(!mobile)
-            }
-          },
-          type: "Switch",
-        },
-        {
-          title: "Fav",
-          icon: <EyeIcon />,
-          onClick: function () {
-            window.open("/landings" + result.data.path, "_blank")
-          },
-          type: "Fav",
-        },
-        {
-          title: "Fav",
-          icon: <Publish />,
-          onClick: function () {
-            setloadingPage(true)
-            publishLanding(query.id, token).then(({ status }) => {
-              status === 200 && setShowMessage(true)
-              setloadingPage(false)
-              setTimeout(() => {
-                window.open("/landings" + result.data.path, "_blank")
-              }, 2000)
-            })
-          },
-          type: "Fav",
-        },
-      ]}
-      loading={loadingPage}
-    >
-      <Collapse in={true}>
-        {!loading && !error && (
-          <TinaProvider cms={cms}>
-            <div
-              style={
-                mobile
-                  ? {
-                      width: 414,
-                      height: 736,
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                      border: "1px solid #ccc",
-                      overflowY: "auto",
-                      transition: "width 2s, height 4s",
-                    }
-                  : { transition: "width 2s, height 4s" }
+    return (
+      <AdminTheme
+        title="**Edit Landings**"
+        buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
+        navBarConfig={[
+          {
+            title: "Switch",
+            onClick: function (view: string) {
+              if (view) {
+                setMobile(!mobile)
               }
-            >
-              <TinaEdit
-                initialValues={
-                  result && result.data.page_latest
-                    ? result.data.page_latest
-                    : {}
+            },
+            type: "Switch",
+          },
+          {
+            title: "Fav",
+            icon: <EyeIcon />,
+            onClick: function () {
+              window.open("/landings" + result.data.path, "_blank")
+            },
+            type: "Fav",
+          },
+          {
+            title: "Fav",
+            icon: <Publish />,
+            onClick: function () {
+              setloadingPage(true)
+              publishLanding(query.id, token).then(({ status }) => {
+                status === 200 && setShowMessage(true)
+                setloadingPage(false)
+                setTimeout(() => {
+                  window.open("/landings" + result.data.path, "_blank")
+                }, 2000)
+              })
+            },
+            type: "Fav",
+          },
+        ]}
+        loading={loadingPage}
+      >
+        <Collapse in={true}>
+          {!loading && !error && (
+            <TinaProvider cms={cms}>
+              <div
+                style={
+                  mobile
+                    ? {
+                        width: 414,
+                        height: 736,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        border: "1px solid #ccc",
+                        overflowY: "auto",
+                        transition: "width 2s, height 4s",
+                      }
+                    : { transition: "width 2s, height 4s" }
                 }
-                token={token}
-                edit={true}
-              />
-            </div>
-          </TinaProvider>
-        )}
-      </Collapse>
+              >
+                <TinaEdit
+                  initialValues={
+                    result && result.data.page_latest
+                      ? result.data.page_latest
+                      : {}
+                  }
+                  token={token}
+                  edit={true}
+                />
+              </div>
+            </TinaProvider>
+          )}
+        </Collapse>
 
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={showMessage}
-        message="Landing successfully publish!!!"
-        key={"horizontal"}
-      />
-    </AdminTheme>
-  )
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={showMessage}
+          message="Landing successfully publish!!!"
+          key={"horizontal"}
+        />
+      </AdminTheme>
+    )
+  } else {
+    return "Loading"
+  }
 }
