@@ -9,7 +9,7 @@ function Image({ index, data }) {
   const stylesParse = jsonParse(styles)
 
   return (
-    <BlocksControls index={index} insetControls={true}>
+    <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
       <img
         src={scr}
         width={width}

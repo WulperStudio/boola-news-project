@@ -15,7 +15,7 @@ function Heading({ index, data }) {
   const { text_color, text_align, font_size, styles, transitions } = data;
   const stylesParse = jsonParse(styles);
   return (
-    <BlocksControls index={index}>
+    <BlocksControls index={index} focusRing={{ offset: 0 }}>
       <Transitions type={transitions} timeout={5000}>
         <Typography
           variant="h1"

@@ -6,7 +6,7 @@ import Link from "@material-ui/core/Link";
 export const Actions = ({ index, data }) => {
   const { actions, text_align } = data;
   return (
-    <BlocksControls index={index}>
+    <BlocksControls index={index} focusRing={{ offset: 0 }}>
       <div style={{ textAlign: text_align }}>
         {actions &&
           actions.map(function (action, index) {

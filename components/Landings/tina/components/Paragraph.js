@@ -16,7 +16,7 @@ function Paragraph({ index, data }) {
   const { text_color, text_align, font_size, subtext, styles } = data;
   const stylesParse = jsonParse(styles);
   return (
-    <BlocksControls index={index}>
+    <BlocksControls index={index} focusRing={{ offset: 0 }}>
       <Typography
         variant="body1"
         component="p"

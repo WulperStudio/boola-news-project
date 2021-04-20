@@ -2,14 +2,23 @@ import React from "react"
 import { BlocksControls, InlineBlocks, InlineGroup } from "react-tinacms-inline"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
-import { HeadingBlock } from "./Heading"
-import { ParagraphBlock } from "./Paragraph"
-import { ActionsBlock } from "./Actions"
-import { ImageBlock } from "./Image"
-import { ListBlock } from "./List"
+import { makeStyles } from "@material-ui/core/styles"
+import { ContentBlock } from "./Content"
 import { jsonForm } from "../utils"
 import { Navbar, NavbarDefaultItem, NavbarFields } from "./Navbar"
 
+const useStyles = makeStyles({
+  fixStyle: {
+    "& div": {
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignContent: "space-around",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+})
 const BACKGROUND_IMAGE_NONE =
   "https://fakeimg.pl/420x100/?retina=1&text=Upload%20File"
 const STRAPI_URL = "https://boola-news-admin.herokuapp.com"
@@ -28,7 +37,7 @@ export function Hero({ index, data }) {
     withNavbar,
     navbar,
   } = data
-  console.log(background_color)
+  const classes = useStyles()
   return (
     <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
       <div
@@ -62,7 +71,7 @@ export function Hero({ index, data }) {
               insetControls={true}
               fields={NavbarFields}
             >
-              <Navbar data={navbar}/>
+              <Navbar data={navbar} />
             </InlineGroup>
           </Container>
         )}
@@ -75,24 +84,31 @@ export function Hero({ index, data }) {
             flex: 1,
           }}
         >
-          <Container>
+          <Container id="CONTAINER">
             <Grid
+              id="GRIDCONTAINER"
               container
               spacing={2}
               direction="row"
               justify="center"
               alignItems="center"
             >
-              {align === "right" && <Grid item xs={6} />}
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                id="GRID12"
+                justify="center"
+                alignItems="center"
+                className={classes.fixStyle}
+              >
                 <InlineBlocks
+                  className="TEST"
                   focusRing={{ offset: 0 }}
                   name="content"
                   blocks={CONTENT_BLOCKS}
-                  direction="vertical"
+                  direction="horizontal"
                 />
               </Grid>
-              {align === "left" && <Grid item xs={6} />}
             </Grid>
           </Container>
         </div>
@@ -100,24 +116,94 @@ export function Hero({ index, data }) {
     </BlocksControls>
   )
 }
+const DefaultItemHero = {
+  "paddingTop": 16,
+  "align": "center",
+  "height": 400,
+  "background_image": "",
+  "paddingRight": 0,
+  "navbar": {
+    "logo": "https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056",
+    "items": [
+      {
+        "label": "Link Example",
+        "href": "/",
+        "type": "Link"
+      },
+      {
+        "label": "Button Example",
+        "href": "/",
+        "type": "Button"
+      }
+    ],
+    "styles": "{}"
+  },
+  "text_color": "#fffaf4",
+  "background_color": "#051e26",
+  "withNavbar": false,
+  "paddingLeft": 0,
+  "content": [
+    {
+      "_template": "content",
+      "width": 6,
+      "content": [
+        {
+          "_template": "h1",
+          "headline": "Lorem Ipsum",
+          "text_color": "#ffffff",
+          "text_align": "center",
+          "font_size": "32px",
+          "styles": "{}",
+          "transitions": "None"
+        },
+        {
+          "_template": "p",
+          "subtext": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+          "text_color": "#ffffff",
+          "text_align": "center",
+          "font_size": "16px",
+          "styles": "{}"
+        },
+        {
+          "_template": "actions",
+          "text_align": "center",
+          "actions": [
+            {
+              "label": "Action Label",
+              "link": "/",
+              "type": "button",
+              "color": "primary",
+              "size": "medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_template": "content",
+      "width": 6,
+      "content": [
+        {
+          "_template": "image",
+          "scr": "https://fakeimg.pl/400x300/?retina=1&text=Upload%20Image",
+          "alt": "Image",
+          "width": 400,
+          "height": 300,
+          "align": "center",
+          "styles": "{}"
+        }
+      ]
+    }
+  ],
+  "_template": "hero",
+  "paddingBottom": 16
+}
 
 export const heroBlock = {
   Component: Hero,
   template: {
     label: "Hero",
-    defaultItem: {
-      withNavbar: false,
-      background_color: "#051e26",
-      text_color: "#fffaf4",
-      align: "center",
-      background_image: "",
-      height: 400,
-      paddingTop: 16,
-      paddingBottom: 16,
-      paddingLeft: 0,
-      paddingRight: 0,
-      navbar: NavbarDefaultItem,
-    },
+    defaultItem: DefaultItemHero,
     fields: [
       {
         name: "withNavbar",
@@ -188,9 +274,5 @@ export const heroBlock = {
 }
 
 const CONTENT_BLOCKS = {
-  h1: HeadingBlock,
-  p: ParagraphBlock,
-  list: ListBlock,
-  actions: ActionsBlock,
-  image: ImageBlock,
+  content: ContentBlock,
 }

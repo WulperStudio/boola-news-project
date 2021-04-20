@@ -7,7 +7,7 @@ export const List = ({ index, data }) => {
   const { list, styles } = data;
   const stylesParse = jsonParse(styles);
   return (
-    <BlocksControls index={index}>
+    <BlocksControls index={index} focusRing={{ offset: 0 }}>
       <Typography variant="body1" component="ul" styles={{ ...stylesParse }}>
         {list &&
           list.map((l, i) => (
