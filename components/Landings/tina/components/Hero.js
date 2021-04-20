@@ -1,5 +1,5 @@
 import React from "react"
-import { BlocksControls, InlineBlocks } from "react-tinacms-inline"
+import { BlocksControls, InlineBlocks, InlineGroup } from "react-tinacms-inline"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import { HeadingBlock } from "./Heading"
@@ -8,6 +8,7 @@ import { ActionsBlock } from "./Actions"
 import { ImageBlock } from "./Image"
 import { ListBlock } from "./List"
 import { jsonForm } from "../utils"
+import { Navbar, NavbarDefaultItem, NavbarFields } from "./Navbar"
 
 const BACKGROUND_IMAGE_NONE =
   "https://fakeimg.pl/420x100/?retina=1&text=Upload%20File"
@@ -24,6 +25,8 @@ export function Hero({ index, data }) {
     paddingBottom,
     paddingLeft,
     paddingRight,
+    withNavbar,
+    navbar,
   } = data
   console.log(background_color)
   return (
@@ -31,12 +34,10 @@ export function Hero({ index, data }) {
       <div
         className="hero"
         style={{
-          width: "100%",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           flexDirection: "column",
-          position: "relative",
+          width: "100%",
+          minHeight: height,
           color: text_color || "#000",
           backgroundColor: background_color || "transparent",
           backgroundImage:
@@ -47,32 +48,54 @@ export function Hero({ index, data }) {
           backgroundPosition:
             align === "right" ? "left" : align === "left" ? "right" : "center",
           backgroundSize: align === "center" ? "cover" : "contain",
-          height,
           paddingTop,
           paddingBottom,
           paddingLeft,
           paddingRight,
         }}
       >
-        <Container>
-          <Grid
-            container
-            spacing={2}
-            direction="row"
-            justify="center"
-            alignItems="center"
-          >
-            {align === "right" && <Grid item xs={6} />}
-            <Grid item xs={12}>
-              <InlineBlocks
-                name="content"
-                blocks={CONTENT_BLOCKS}
-                direction="vertical"
-              />
+        {withNavbar && (
+          <Container>
+            <InlineGroup
+              name="navbar"
+              focusRing={{ offset: 0 }}
+              insetControls={true}
+              fields={NavbarFields}
+            >
+              <Navbar data={navbar}/>
+            </InlineGroup>
+          </Container>
+        )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Container>
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justify="center"
+              alignItems="center"
+            >
+              {align === "right" && <Grid item xs={6} />}
+              <Grid item xs={12}>
+                <InlineBlocks
+                  focusRing={{ offset: 0 }}
+                  name="content"
+                  blocks={CONTENT_BLOCKS}
+                  direction="vertical"
+                />
+              </Grid>
+              {align === "left" && <Grid item xs={6} />}
             </Grid>
-            {align === "left" && <Grid item xs={6} />}
-          </Grid>
-        </Container>
+          </Container>
+        </div>
       </div>
     </BlocksControls>
   )
@@ -83,17 +106,28 @@ export const heroBlock = {
   template: {
     label: "Hero",
     defaultItem: {
+      withNavbar: false,
       background_color: "#051e26",
       text_color: "#fffaf4",
       align: "center",
       background_image: "",
-      paddingTop: 0,
       height: 400,
-      paddingBottom: 32,
-      paddingLeft: 32,
+      paddingTop: 16,
+      paddingBottom: 16,
+      paddingLeft: 0,
       paddingRight: 0,
+      navbar: NavbarDefaultItem,
     },
     fields: [
+      {
+        name: "withNavbar",
+        component: "toggle",
+        label: "With Navbar?",
+        toggleLabels: {
+          true: "Yes",
+          false: "No",
+        },
+      },
       {
         name: "background_color",
         label: "Background Color",
@@ -111,12 +145,6 @@ export const heroBlock = {
         previewSrc: src => src,
         focusRing: false,
         clearable: true,
-      },
-      {
-        name: "text_color",
-        label: "Text Color",
-        component: "select",
-        options: ["white", "black"],
       },
       {
         name: "align",

@@ -4,7 +4,7 @@ import axios from "axios"
 import { InlineForm, InlineBlocks } from "react-tinacms-inline"
 import { heroBlock } from "./components/Hero"
 import configTinaForm from "./configTinaForm"
-import { HeroWithNavbarBlock } from "./components/HeroWithNavbar"
+import { NavbarBlock } from "./components/Navbar"
 
 const updateLandings = (id: any, data, token: string) =>{
   return axios.put(`${process.env.strapiServer}/pages-histories/${id}`, data, {
@@ -47,6 +47,6 @@ export default function Editor({ token, initialValues, edit }) {
 }
 
 const HOME_BLOCKS = {
+  navbar: NavbarBlock,
   hero: heroBlock,
-  heroWithNavbar: HeroWithNavbarBlock
 }
