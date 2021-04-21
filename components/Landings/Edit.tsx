@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from "axios"
 import { useAsync } from "react-async-hook"
 import AdminTheme from "@wulpers-ui/core/components/templates/Admin"
 import EyeIcon from "@wulpers-ui/core/components/icons/Eye"
+import PlusIcon from "@wulpers-ui/core/components/icons/Plus"
 import Publish from "@wulpers-ui/core/components/icons/Publish"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 import Collapse from "@material-ui/core/Collapse/Collapse"
@@ -56,8 +57,18 @@ export const LandingsEdit = ({ token }) => {
   return (
     <AdminTheme
       title="**Edit Landings**"
-      buttonBackOnClick={() => Router.push("/admin/landings/cards-view")}
+      buttonBackOnClick={() => {
+        Router.push("/admin/landings/cards-view")
+      }}
       navBarConfig={[
+        {
+          title: "Fav",
+          icon: <PlusIcon />,
+          onClick: () => {
+            Router.push("/admin/landings/import/" + query.id)
+          },
+          type: "Fav",
+        },
         {
           title: "Switch",
           onClick: function (view: string) {
