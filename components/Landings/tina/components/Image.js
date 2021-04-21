@@ -2,31 +2,39 @@ import React from "react"
 import { BlocksControls } from "react-tinacms-inline"
 import { jsonForm, jsonParse } from "../utils"
 
-const STRAPI_URL = "https://boola-news-admin.herokuapp.com";
-
 function Image({ index, data }) {
   const { scr, width, height, styles, alt, align } = data
   const stylesParse = jsonParse(styles)
 
   return (
-    <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
-      <img
-        src={scr}
-        width={width}
-        height={height}
-        alt={alt}
+    <BlocksControls
+      index={index}
+      focusRing={{ offset: 0 }}
+      className="MuiGrid-grid-xs-12"
+      insetControls
+    >
+      <div
         style={{
-          display: "block",
+          display: "flex",
           ...(align === "center" && {
-            marginLeft: "auto",
-            marginRight: "auto",
+            justifyContent: "center",
           }),
           ...(align === "right" && {
-            float: "right"
+            justifyContent: "flex-end",
           }),
-          ...stylesParse,
+          ...(align === "left" && {
+            justifyContent: "flex-start",
+          }),
         }}
-      />
+      >
+        <img
+          src={scr}
+          width={width}
+          height={height}
+          alt={alt}
+          style={stylesParse}
+        />
+      </div>
     </BlocksControls>
   )
 }
@@ -51,7 +59,7 @@ export const ImageBlock = {
         component: "image",
         parse: media =>
           media.filename
-            ? `${STRAPI_URL}/uploads/${media.filename}`
+            ? `${process.env.strapiServer}/uploads/${media.filename}`
             : "https://fakeimg.pl/400x300/?retina=1&text=Upload%20Image",
         uploadDir: () => "/",
         previewSrc: src => src,

@@ -6,7 +6,7 @@ import Container from "@material-ui/core/Container"
 import { jsonParse, jsonForm } from "../utils"
 
 export function Navbar({ data }) {
-  const { items, styles } = data
+  const { logo, items, styles } = data
   const stylesParse = jsonParse(styles)
   return (
     <nav
@@ -16,13 +16,10 @@ export function Navbar({ data }) {
         ...stylesParse,
       }}
     >
-      <div>
-        <img
-          src="https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056"
-          alt="test"
-        />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <img src={logo} alt="test" style={{maxHeight:100}}/>
       </div>
-      <div>
+      <div style={{ display: "flex", alignItems: "center" }}>
         {items.map(item => {
           if (item.type === "Link") {
             return (
@@ -53,7 +50,7 @@ export function Navbar({ data }) {
 
 export function NavbarWithControls({ index, data }) {
   return (
-    <BlocksControls index={index} insetControls>
+    <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
       <Container>
         <Navbar data={data} />
       </Container>
@@ -85,7 +82,7 @@ export const NavbarFields = [
     component: "image",
     parse: media =>
       media.filename
-        ? `${STRAPI_URL}/uploads/${media.filename}`
+        ? `${process.env.strapiServer}/uploads/${media.filename}`
         : "https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056",
     uploadDir: () => "/",
     previewSrc: src => src,

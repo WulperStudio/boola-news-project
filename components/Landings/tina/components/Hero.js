@@ -21,7 +21,6 @@ const useStyles = makeStyles({
 })
 const BACKGROUND_IMAGE_NONE =
   "https://fakeimg.pl/420x100/?retina=1&text=Upload%20File"
-const STRAPI_URL = "https://boola-news-admin.herokuapp.com"
 
 export function Hero({ index, data }) {
   const {
@@ -85,31 +84,13 @@ export function Hero({ index, data }) {
           }}
         >
           <Container id="CONTAINER">
-            <Grid
-              id="GRIDCONTAINER"
-              container
-              spacing={2}
-              direction="row"
-              justify="center"
-              alignItems="center"
-            >
-              <Grid
-                item
-                xs={12}
-                id="GRID12"
-                justify="center"
-                alignItems="center"
-                className={classes.fixStyle}
-              >
-                <InlineBlocks
-                  className="TEST"
-                  focusRing={{ offset: 0 }}
-                  name="content"
-                  blocks={CONTENT_BLOCKS}
-                  direction="horizontal"
-                />
-              </Grid>
-            </Grid>
+            <InlineBlocks
+              className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-center MuiGrid-justify-xs-center"
+              focusRing={{ offset: 0 }}
+              name="content"
+              blocks={CONTENT_BLOCKS}
+              direction="horizontal"
+            />
           </Container>
         </div>
       </div>
@@ -117,86 +98,87 @@ export function Hero({ index, data }) {
   )
 }
 const DefaultItemHero = {
-  "paddingTop": 16,
-  "align": "center",
-  "height": 400,
-  "background_image": "",
-  "paddingRight": 0,
-  "navbar": {
-    "logo": "https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056",
-    "items": [
+  paddingTop: 16,
+  align: "center",
+  height: 400,
+  background_image: "",
+  paddingRight: 0,
+  navbar: {
+    logo: "https://fakeimg.pl/190x56/?text=Logo%20%20190%20x%2056",
+    items: [
       {
-        "label": "Link Example",
-        "href": "/",
-        "type": "Link"
+        label: "Link Example",
+        href: "/",
+        type: "Link",
       },
       {
-        "label": "Button Example",
-        "href": "/",
-        "type": "Button"
-      }
+        label: "Button Example",
+        href: "/",
+        type: "Button",
+      },
     ],
-    "styles": "{}"
+    styles: "{}",
   },
-  "text_color": "#fffaf4",
-  "background_color": "#051e26",
-  "withNavbar": false,
-  "paddingLeft": 0,
-  "content": [
+  text_color: "#fffaf4",
+  background_color: "#051e26",
+  withNavbar: false,
+  paddingLeft: 0,
+  content: [
     {
-      "_template": "content",
-      "width": 6,
-      "content": [
+      _template: "content",
+      width: 6,
+      content: [
         {
-          "_template": "h1",
-          "headline": "Lorem Ipsum",
-          "text_color": "#ffffff",
-          "text_align": "center",
-          "font_size": "32px",
-          "styles": "{}",
-          "transitions": "None"
+          _template: "h1",
+          headline: "Lorem Ipsum",
+          text_color: "#ffffff",
+          text_align: "center",
+          font_size: "32px",
+          styles: "{}",
+          transitions: "None",
         },
         {
-          "_template": "p",
-          "subtext": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-          "text_color": "#ffffff",
-          "text_align": "center",
-          "font_size": "16px",
-          "styles": "{}"
+          _template: "p",
+          subtext:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+          text_color: "#ffffff",
+          text_align: "center",
+          font_size: "16px",
+          styles: "{}",
         },
         {
-          "_template": "actions",
-          "text_align": "center",
-          "actions": [
+          _template: "actions",
+          text_align: "center",
+          actions: [
             {
-              "label": "Action Label",
-              "link": "/",
-              "type": "button",
-              "color": "primary",
-              "size": "medium"
-            }
-          ]
-        }
-      ]
+              label: "Action Label",
+              link: "/",
+              type: "button",
+              color: "primary",
+              size: "medium",
+            },
+          ],
+        },
+      ],
     },
     {
-      "_template": "content",
-      "width": 6,
-      "content": [
+      _template: "content",
+      width: 6,
+      content: [
         {
-          "_template": "image",
-          "scr": "https://fakeimg.pl/400x300/?retina=1&text=Upload%20Image",
-          "alt": "Image",
-          "width": 400,
-          "height": 300,
-          "align": "center",
-          "styles": "{}"
-        }
-      ]
-    }
+          _template: "image",
+          scr: "https://fakeimg.pl/400x300/?retina=1&text=Upload%20Image",
+          alt: "Image",
+          width: 400,
+          height: 300,
+          align: "center",
+          styles: "{}",
+        },
+      ],
+    },
   ],
-  "_template": "hero",
-  "paddingBottom": 16
+  _template: "hero",
+  paddingBottom: 16,
 }
 
 export const heroBlock = {
@@ -226,7 +208,9 @@ export const heroBlock = {
         label: "Background Image",
         component: "image",
         parse: media =>
-          media.filename ? `${STRAPI_URL}/uploads/${media.filename}` : "",
+          media.filename
+            ? `${process.env.strapiServer}/uploads/${media.filename}`
+            : "",
         uploadDir: () => "/",
         previewSrc: src => src,
         focusRing: false,

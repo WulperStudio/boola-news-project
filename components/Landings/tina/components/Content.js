@@ -10,17 +10,19 @@ import { ParagraphBlock } from "./Paragraph"
 import { ActionsBlock } from "./Actions"
 import { ImageBlock } from "./Image"
 import { ListBlock } from "./List"
+import { VideoBlock } from "./Video"
 
 function Content({ index, data }) {
   const { width } = data
   return (
-    <Grid item xs={width} id="GRID">
+    <Grid item xs={12} lg={width} id="GRID">
       <BlocksControls index={index} insetControls>
         <InlineBlocks
           focusRing={{ offset: 0 }}
           name="content"
           blocks={CONTENT_BLOCKS}
           direction="vertical"
+          className="MuiGrid-grid-xs-12"
         />
       </BlocksControls>
     </Grid>
@@ -53,4 +55,5 @@ const CONTENT_BLOCKS = {
   list: ListBlock,
   actions: ActionsBlock,
   image: ImageBlock,
+  video: VideoBlock
 }

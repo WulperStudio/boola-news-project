@@ -1,7 +1,7 @@
 import { GitMediaStore } from "@tinacms/git-client";
 
 export class MediaStore extends GitMediaStore {
-  strapiUrl = "https://boola-news-admin.herokuapp.com";
+  strapiUrl = process.env.strapiServer;
 
   async previewSrc(id) {
     const response = await fetch(`${this.strapiUrl}/upload/files/${id}`, {

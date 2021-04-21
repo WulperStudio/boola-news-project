@@ -11,7 +11,6 @@ import { jsonForm, jsonParse } from "../utils"
 
 const BACKGROUND_IMAGE_NONE =
   "https://fakeimg.pl/420x100/?retina=1&text=Upload%20File"
-const STRAPI_URL = "https://boola-news-admin.herokuapp.com"
 
 export function HeroWithNavbar({ index, data }) {
   const {
@@ -131,7 +130,7 @@ export const HeroWithNavbarBlock = {
         label: "Background Image",
         component: "image",
         parse: media =>
-          media.filename ? `${STRAPI_URL}/uploads/${media.filename}` : "",
+          media.filename ? `${process.env.strapiServer}/uploads/${media.filename}` : "",
         uploadDir: () => "/",
         previewSrc: src => src,
         focusRing: false,
@@ -142,7 +141,7 @@ export const HeroWithNavbarBlock = {
         label: "Logo",
         component: "image",
         parse: media =>
-          media.filename ? `${STRAPI_URL}/uploads/${media.filename}` : "",
+          media.filename ? `${process.env.strapiServer}/uploads/${media.filename}` : "",
         uploadDir: () => "/",
         previewSrc: src => src,
         focusRing: false,
