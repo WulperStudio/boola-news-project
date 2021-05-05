@@ -8,7 +8,7 @@ import PlusIcon from "@wulpers-ui/core/components/icons/Plus"
 import Publish from "@wulpers-ui/core/components/icons/Publish"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 import Collapse from "@material-ui/core/Collapse/Collapse"
-import { Provider } from "./tina/Provider"
+import Editor from "./tina/Editor"
 
 const fetchLandings = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {
@@ -106,14 +106,33 @@ export const LandingsEdit = ({ token }) => {
     >
       <Collapse in={true}>
         {!loading && !loadingPage && !error && (
-          <Provider
-            edit={true}
-            token={token}
-            mobile={mobile}
-            initialValues={
-              result && result.data.page_latest ? result.data.page_latest : {}
-            }
-          />
+          <div
+            className="MuiGrid-root"
+            style={{
+              margin: 0,
+              padding: 0,
+              transition: "width 0.5s",
+              ...(mobile
+                ? {
+                    width: 414,
+                    height: 736,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    border: "1px solid #ccc",
+                    overflowY: "auto",
+                  
+                  }
+                : { width: "100%" })
+            }}
+          >
+            <Editor
+              edit={true}
+              token={token}
+              initialValues={
+                result && result.data.page_latest ? result.data.page_latest : {}
+              }
+            />
+          </div>
         )}
       </Collapse>
 

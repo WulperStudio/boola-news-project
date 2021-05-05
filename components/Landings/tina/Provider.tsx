@@ -1,9 +1,8 @@
 import React from "react"
 import { TinaProvider, TinaCMS } from "tinacms"
 import { MediaStore } from "./MediaStore"
-import Editor from "./Editor"
 
-export const Provider = ({ initialValues, token, edit, mobile }) => {
+export default function Provider({ children }) {
   const cms = new TinaCMS({
     enabled: true,
     sidebar: {
@@ -29,25 +28,5 @@ export const Provider = ({ initialValues, token, edit, mobile }) => {
     }
   )
 
-  return (
-    <TinaProvider cms={cms}>
-      <div
-        style={
-          mobile
-            ? {
-                width: 414,
-                height: 736,
-                marginLeft: "auto",
-                marginRight: "auto",
-                border: "1px solid #ccc",
-                overflowY: "auto",
-                transition: "width 2s, height 4s",
-              }
-            : { transition: "width 2s, height 4s" }
-        }
-      >
-        <Editor initialValues={initialValues} token={token} edit={edit} />
-      </div>
-    </TinaProvider>
-  )
+  return <TinaProvider cms={cms}>{children}</TinaProvider>
 }
