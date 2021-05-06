@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { ContentBlock } from "./Content"
 import { jsonForm } from "../utils"
 import { Navbar, NavbarDefaultItem, NavbarFields } from "./Navbar"
+import { Padding } from "./Padding"
 
 const useStyles = makeStyles({
   fixStyle: {
@@ -29,16 +30,25 @@ export function Hero({ index, data }) {
     align,
     background_image,
     height,
-    paddingTop,
-    paddingBottom,
-    paddingLeft,
-    paddingRight,
+    padding,
+    margin,
     withNavbar,
     navbar,
   } = data
   const classes = useStyles()
   return (
     <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
+      <button
+        onClick={() => console.log(">>>", data)}
+        style={{
+          position: "absolute",
+          right: 10,
+          bottom: 10,
+          cursor: "pointer",
+        }}
+      >
+        Save
+      </button>
       <div
         className="hero"
         style={{
@@ -56,10 +66,8 @@ export function Hero({ index, data }) {
           backgroundPosition:
             align === "right" ? "left" : align === "left" ? "right" : "center",
           backgroundSize: align === "center" ? "cover" : "contain",
-          paddingTop,
-          paddingBottom,
-          paddingLeft,
-          paddingRight,
+          padding,
+          margin,
         }}
       >
         {withNavbar && (
@@ -85,7 +93,7 @@ export function Hero({ index, data }) {
         >
           <Container id="CONTAINER">
             <InlineBlocks
-              className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-align-items-xs-center MuiGrid-justify-xs-center"
+              className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 MuiGrid-justify-xs-center"
               focusRing={{ offset: 0 }}
               name="content"
               blocks={CONTENT_BLOCKS}
@@ -229,28 +237,14 @@ export const heroBlock = {
         defaultValue: 400,
       },
       {
-        name: "paddingTop",
-        label: "padding Top",
-        component: "number",
-        defaultValue: 32,
+        name: "padding",
+        label: "Padding",
+        component: Padding,
       },
       {
-        name: "paddingBottom",
-        label: "padding Bottom",
-        component: "number",
-        defaultValue: 32,
-      },
-      {
-        name: "paddingLeft",
-        label: "padding Left",
-        component: "number",
-        defaultValue: 0,
-      },
-      {
-        name: "paddingRight",
-        label: "padding Right",
-        component: "number",
-        defaultValue: 0,
+        name: "margin",
+        label: "Margin",
+        component: Padding,
       },
       jsonForm,
     ],

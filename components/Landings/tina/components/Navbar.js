@@ -4,20 +4,23 @@ import Button from "@material-ui/core/Button"
 import Link from "@material-ui/core/Link"
 import Container from "@material-ui/core/Container"
 import { jsonParse, jsonForm } from "../utils"
+import { Padding } from "./Padding"
 
 export function Navbar({ data }) {
-  const { logo, items, styles } = data
+  const { logo, items, styles, padding, margin, separation } = data
   const stylesParse = jsonParse(styles)
   return (
     <nav
       style={{
         display: "flex",
         justifyContent: "space-between",
+        padding,
+        margin,
         ...stylesParse,
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img src={logo} alt="test" style={{maxHeight:100}}/>
+        <img src={logo} alt="test" style={{ maxHeight: 100 }} />
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         {items.map(item => {
@@ -25,7 +28,7 @@ export function Navbar({ data }) {
             return (
               <Link
                 href={item.href}
-                style={{ fontSize: 16, marginLeft: 12 }}
+                style={{ fontSize: 16, marginLeft: separation }}
                 href="/#"
               >
                 {item.label}
@@ -36,7 +39,7 @@ export function Navbar({ data }) {
               <Button
                 variant="contained"
                 color="primary"
-                style={{ textTransform: "none", marginLeft: 12 }}
+                style={{ textTransform: "none", marginLeft: separation }}
               >
                 {item.label}
               </Button>
@@ -72,6 +75,7 @@ export const NavbarDefaultItem = {
       type: "Button",
     },
   ],
+  separation: 12,
   styles: "{}",
 }
 
@@ -117,6 +121,21 @@ export const NavbarFields = [
         options: ["Button", "Link"],
       },
     ],
+  },
+  {
+    name: "padding",
+    label: "Padding",
+    component: Padding,
+  },
+  {
+    name: "margin",
+    label: "Margin",
+    component: Padding,
+  },
+  {
+    name: "separation",
+    label: "Items separation (px)",
+    component: "number",
   },
   jsonForm,
 ]

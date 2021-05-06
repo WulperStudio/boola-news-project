@@ -1,9 +1,7 @@
 import React from "react"
 import { BlocksControls, InlineBlocks } from "react-tinacms-inline"
-import Button from "@material-ui/core/Button"
-import Link from "@material-ui/core/Link"
-import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
+import { makeStyles } from "@material-ui/core/styles"
 import { jsonParse, jsonForm } from "../utils"
 import { HeadingBlock } from "./Heading"
 import { ParagraphBlock } from "./Paragraph"
@@ -11,18 +9,33 @@ import { ActionsBlock } from "./Actions"
 import { ImageBlock } from "./Image"
 import { ListBlock } from "./List"
 import { VideoBlock } from "./Video"
+import { Padding } from "./Padding"
+
+const useStyles = makeStyles({
+  fixStyle: {
+    "& > div": {},
+  },
+})
 
 function Content({ index, data }) {
-  const { width } = data
+  const classes = useStyles()
+  const { width, padding, margin, styles } = data
+  const stylesParse = jsonParse(styles)
   return (
-    <Grid item xs={12} lg={width} id="GRID">
+    <Grid
+      className={classes.fixStyle}
+      item
+      xs={12}
+      lg={width}
+      id="GRID"
+      style={{ padding, margin, ...stylesParse }}
+    >
       <BlocksControls index={index} insetControls>
         <InlineBlocks
           focusRing={{ offset: 0 }}
           name="content"
           blocks={CONTENT_BLOCKS}
           direction="vertical"
-          className="MuiGrid-grid-xs-12"
         />
       </BlocksControls>
     </Grid>
@@ -45,6 +58,17 @@ export const ContentBlock = {
         max: 12,
         min: 1,
       },
+      {
+        name: "padding",
+        label: "Padding",
+        component: Padding,
+      },
+      {
+        name: "margin",
+        label: "Margin",
+        component: Padding,
+      },
+      jsonForm,
     ],
   },
 }
@@ -55,5 +79,5 @@ const CONTENT_BLOCKS = {
   list: ListBlock,
   actions: ActionsBlock,
   image: ImageBlock,
-  video: VideoBlock
+  video: VideoBlock,
 }
