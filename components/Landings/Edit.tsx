@@ -9,6 +9,8 @@ import Publish from "@wulpers-ui/core/components/icons/Publish"
 import Snackbar from "@material-ui/core/Snackbar/Snackbar"
 import Collapse from "@material-ui/core/Collapse/Collapse"
 import Editor from "./tina/Editor"
+import { useContext } from "react"
+import useAppContext, { Context } from "../ContextProvider"
 
 const fetchLandings = (id: any, token: string) =>
   axios.get(`${process.env.strapiServer}/pages/${id}`, {

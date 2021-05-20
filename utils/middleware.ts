@@ -100,3 +100,10 @@ export async function getSessionData({ req, res }: { req: NextApiRequest, res: N
   return { props: { token, dataSession, dataBlog, domain: req.headers.host } }
 
 }
+
+export interface getSessionDataInterface{
+  token: string
+  domain: string
+  dataSession: any
+  dataBlog: any
+}

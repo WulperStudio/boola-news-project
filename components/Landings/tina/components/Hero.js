@@ -1,4 +1,5 @@
 import React from "react"
+import Router from "next/router"
 import { BlocksControls, InlineBlocks, InlineGroup } from "react-tinacms-inline"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
@@ -7,6 +8,7 @@ import { ContentBlock } from "./Content"
 import { jsonForm } from "../utils"
 import { Navbar, NavbarDefaultItem, NavbarFields } from "./Navbar"
 import { Padding } from "./Padding"
+import useAppContext from "../../../ContextProvider"
 
 const useStyles = makeStyles({
   fixStyle: {
@@ -36,10 +38,15 @@ export function Hero({ index, data }) {
     navbar,
   } = data
   const classes = useStyles()
+  const [, setState] = useAppContext()
+
   return (
     <BlocksControls index={index} focusRing={{ offset: 0 }} insetControls>
       <button
-        onClick={() => console.log(">>>", data)}
+        onClick={() => {
+          setState({ temp: data })
+          Router.push(`/admin/landings/export`)
+        }}
         style={{
           position: "absolute",
           right: 10,
