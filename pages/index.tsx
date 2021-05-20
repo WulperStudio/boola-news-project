@@ -11,7 +11,7 @@ import Grid from "@wulpers-ui/core/components/atoms/Grid"
 const Home = ({ data }: any) => {
   const router = useRouter()
 
-  const Card = ({dataCard}: any) => (
+  const Card = ({ dataCard }: any) => (
     <CardBlog
       key={dataCard.title}
       variant="type2"
@@ -19,7 +19,7 @@ const Home = ({ data }: any) => {
         title: dataCard.title,
         preTitle: "preTitle",
         content: dataCard.content,
-        image:  dataCard.image[0]
+        image: dataCard.image[0]
           ? process.env.strapiServer + dataCard.image[0].url
           : "https://boola-news-admin.herokuapp.com/uploads/card_image_b9274b39f7.png",
       }}
